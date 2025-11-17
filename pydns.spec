@@ -74,6 +74,6 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name="pydns.app",
-    icon=None,  # you can point to a .icns file here later
-    bundle_identifier="se.qtagg.pydns",  # adjust to your preferred ID
+    icon="pydns.icns",
+    bundle_identifier="se.mannetroll.pydns",  # adjust to your preferred ID
 )
