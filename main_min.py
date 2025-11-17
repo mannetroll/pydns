@@ -2,6 +2,7 @@
 
 import sys
 import time
+from typing import Optional
 
 import numpy as np
 from PyQt6.QtCore import (
@@ -236,10 +237,21 @@ class MainWindow(QMainWindow):
         # Keep a reference so data stays alive while QImage uses it
         self._last_pixels = pixels_c
 
+        # Original-size pixmap from the QImage
         pixmap = QPixmap.fromImage(qimg)
-        self.image_label.setPixmap(pixmap)
 
-    def _update_status(self, t: float, it: int, fps: float | None) -> None:
+        # Scale the pixmap to twice its original size, preserving aspect ratio
+        scaled_pixmap = pixmap.scaled(
+            w * 3,
+            h * 3,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+
+        # Show the scaled pixmap in the label
+        self.image_label.setPixmap(scaled_pixmap)
+
+    def _update_status(self, t: float, it: int, fps: Optional[float]) -> None:
         if fps is None:
             text = f"It: {it:d}, T: {t:8.5f}"
         else:
