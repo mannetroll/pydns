@@ -14,4 +14,5 @@ dependencies = [
     "pyqt6",
     "meson",
     "ninja",
+    "pyinstaller",
 ]
