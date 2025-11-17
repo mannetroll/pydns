@@ -54,9 +54,15 @@ class SimulationWorker(QObject):
         """
         Main simulation loop. Intended to be connected to QThread.started.
         """
+        thread = QThread.currentThread()
         last_ts = time.time()
-        while True:
+
+        # Loop until the thread is asked to stop
+        while not thread.isInterruptionRequested():
             if not self._running:
+                # Still allow a quick shutdown while idle
+                if thread.isInterruptionRequested():
+                    break
                 time.sleep(0.01)
                 continue
 
@@ -75,7 +81,7 @@ class SimulationWorker(QObject):
                 time.sleep(0.01 - dt)
             last_ts = now
 
-        # Not normally reached
+        # Now we *do* reach this on shutdown
         self.finished.emit()
 
 
@@ -199,9 +205,10 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event) -> None:  # type: ignore[override]
         # Clean shutdown
-        self.worker.stop()
-        self.thread.quit()
-        self.thread.wait()
+        self.worker.stop()                     # stop advancing the simulation
+        self.thread.requestInterruption()      # tell the worker loop to exit
+        self.thread.quit()                     # stop the QThread event loop (for signals)
+        self.thread.wait()                     # block until the worker thread is done
         super().closeEvent(event)
 
     # ---- worker callbacks -------------------------------------------
