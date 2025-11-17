@@ -9,7 +9,7 @@ A lightweight 2D Direct Numerical Simulation (DNS) visualizer using:
 
 ---
 
-## 🚀 Quick Install (macOS + pyenv + uv)
+## 🚀 Quick Install (macOS + gcc + uv)
 
 ### 1. Install system tools
 
