@@ -265,6 +265,15 @@ class MainWindow(QMainWindow):
             text = f"FPS: {fps:5.2f}, It: {it:d}, T: {t:8.5f}"
         self.status.showMessage(text)
 
+    def _position_window(self):
+        """Place window centered horizontally, 2/3 up vertically."""
+        screen = QApplication.primaryScreen().availableGeometry()
+        win_size = self.frameGeometry()
+
+        x = screen.left() + (screen.width() - win_size.width()) // 2
+        y = screen.top() + int(screen.height() * (1 / 3))
+
+        self.move(x, y)
 
 def main() -> None:
     app = QApplication(sys.argv)
