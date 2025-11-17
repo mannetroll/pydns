@@ -1,0 +1,33 @@
+python module dns_fortran
+    interface
+
+        subroutine dns_init(n, re, k0)
+            integer intent(in) :: n
+            real    intent(in) :: re
+            real    intent(in) :: k0
+        end subroutine dns_init
+
+        subroutine dns_step(t, dt, cn)
+            real intent(inout) :: t
+            real intent(inout) :: dt
+            real intent(inout) :: cn
+        end subroutine dns_step
+
+        subroutine dns_frame(pixarr, px, py)
+            integer, intent(in) :: px, py
+            integer, intent(out) :: pixarr(px,py)
+        end subroutine dns_frame
+
+        subroutine run_dns(n, re, k0)
+            integer intent(in) :: n
+            real    intent(in) :: re
+            real    intent(in) :: k0
+        end subroutine run_dns
+
+        subroutine dns_snapshot(plane, nx, ny, comp)
+            integer, intent(in)  :: nx, ny, comp
+            real,    intent(out) :: plane(nx, ny)
+        end subroutine dns_snapshot
+
+    end interface
+end python module dns_fortran
