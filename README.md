@@ -77,14 +77,3 @@ dist/pydns.app
 Double-click to launch.
 
 ---
-
-## 📁 Minimal Project Layout
-
-```
-pydns/
-├── main_min.py
-├── fortran_dns_min.py
-├── dns_fortran.f90
-├── dns_fortran.cpython-313-darwin.so
-└── pydns.spec
-```
