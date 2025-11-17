@@ -1,5 +1,3 @@
-# main_min.py
-
 import sys
 import time
 from typing import Optional
@@ -10,6 +8,7 @@ from PyQt6.QtCore import (
     QThread,
     pyqtSignal,
     QObject,
+    QTimer,
 )
 from PyQt6.QtGui import (
     QImage,
@@ -265,20 +264,30 @@ class MainWindow(QMainWindow):
             text = f"FPS: {fps:5.2f}, It: {it:d}, T: {t:8.5f}"
         self.status.showMessage(text)
 
-    def _position_window(self):
-        """Place window centered horizontally, 2/3 up vertically."""
-        screen = QApplication.primaryScreen().availableGeometry()
-        win_size = self.frameGeometry()
+    def _position_window(self) -> None:
+        """
+        Place window centered on the available screen (macOS-friendly).
+        """
+        screen = self.screen() or QApplication.primaryScreen()
+        if screen is None:
+            return
 
-        x = screen.left() + (screen.width() - win_size.width()) // 2
-        y = screen.top() + int(screen.height() * (1 / 3))
+        geo = screen.availableGeometry()
+        frame = self.frameGeometry()
 
-        self.move(x, y)
+        # Center the frame in the available geometry
+        frame.moveCenter(geo.center())
+        self.move(frame.topLeft())
+
 
 def main() -> None:
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
+
+    # Position the window once it has a real frame geometry
+    QTimer.singleShot(0, window._position_window)
+
     sys.exit(app.exec())
 
 
