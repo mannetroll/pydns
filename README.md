@@ -14,34 +14,21 @@ A lightweight 2D Direct Numerical Simulation (DNS) visualizer using:
 ### 1. Install system tools
 
 ```bash
-brew install pyenv
 brew install uv
 brew install gcc
 ```
 
-- `pyenv` — Python version manager  
-- `uv` — fast package manager + virtualenv + runner  
+- `uv` — Fast Python package manager + virtualenv + runner  
 - `gcc` — provides `gfortran` for the Fortran module  
 
 ### 2. Install Python and activate it
 
 ```bash
-pyenv install 3.13.5
-pyenv local 3.13.5
-```
-
-Ensure pyenv is active:
-
-```bash
-echo 'eval "$(pyenv init -)"' >> ~/.zprofile
-eval "$(pyenv init -)"
-```
-
-### 3. Create environment + install Python packages
-
-```bash
-uv venv
-uv pip install pyqt6 numpy scipy pyinstaller
+git clone git@github.com:mannetroll/pydns.git
+cd pydns
+uv venv --python 3.13.5
+source .venv/bin/activate
+uv sync
 ```
 
 ---
@@ -51,7 +38,8 @@ uv pip install pyqt6 numpy scipy pyinstaller
 If your solver file is `dns_fortran.f90`:
 
 ```bash
-uv run python -m numpy.f2py -c -m dns_fortran dns_fortran.f90
+cd fortran
+bash build_dns_fortran_min.sh
 ```
 
 This produces:
@@ -59,8 +47,6 @@ This produces:
 ```
 dns_fortran.cpython-313-darwin.so
 ```
-
-Place it next to `main_min.py`.
 
 ---
 
