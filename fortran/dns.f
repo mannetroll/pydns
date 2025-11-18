@@ -6,7 +6,7 @@ C***********************************************************************
 
       IMPLICIT NONE
       INTEGER N, N3D2, PX, PY
-      PARAMETER (N = 64)
+      PARAMETER (N = 128)
       PARAMETER (N3D2 = 3*N/2)
       PARAMETER (PX = N3D2*2)
       PARAMETER (PY = N3D2*2)
@@ -80,12 +80,16 @@ C===== Time stepping ===================================================
 C===== Visualization / sanity checks ===================================
 
       CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,1)
+      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,2)
+      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,3)
       CALL FIELD2KIN(PIXARR,PX,PY,UR,125.0,N3D2,N3D2)
       CALL OM2PHYS(N,N,UC,UR,OM2,TFFTXZ,PREX,PREZ)
       CALL STREAMFUNC(N,N,ALFA,GAMMA,UC,UR,OM2,TFFTXZ,PREX,PREZ)
+      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,4)
 
       WRITE(*,*) 'Pixels sample:',PIXARR(1,1),PIXARR(64,64)
       WRITE(*,*) 'Final T=',T,' CN=',CN,' DT=',DT,' VISC=',VISC
       WRITE(*,*) 'Final Max |UR|=',MAXVAL(ABS(UR))
       WRITE(*,*) 'Final Max |OM2|=',MAXVAL(ABS(OM2))
+      WRITE(*,*) 'Final Max |PIXARR|=',MAXVAL(ABS(PIXARR))
       END

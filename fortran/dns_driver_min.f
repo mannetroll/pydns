@@ -143,7 +143,7 @@ C=======================================================================
       INTEGER PIXARR(NPX,NPY)
 
 C  Simple visualization via FIELD2KIN
-      CALL FIELD2KIN(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2)
+      CALL FIELD2KIN(PIXARR, PX, PY, UR, 125.0, N3D2, N3D2)
 
       RETURN
       END SUBROUTINE DNS_KINETIC
@@ -159,10 +159,26 @@ C=======================================================================
 
 C  Simple visualization via OM2PHYS
       CALL OM2PHYS(N, N, UC, UC, OM2, TFFTXZ, PREX, PREZ)
-      CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, 3)
+      CALL FIELD2PIX(PIXARR, PX, PY, UR, 7.0, N3D2, N3D2, 3)
 
       RETURN
       END SUBROUTINE DNS_OM2PHYS
+
+C=======================================================================
+C  DNS_STREAMFUNC -- Fill a pixarr(nx,ny) supplied from Python
+C=======================================================================
+      SUBROUTINE DNS_STREAMFUNC(PIXARR,NPX,NPY)
+      USE DNS_WORKSPACE
+      IMPLICIT NONE
+      INTEGER NPX,NPY
+      INTEGER PIXARR(NPX,NPY)
+
+C  Simple visualization via OM2PHYS
+      CALL STREAMFUNC(N,N,ALFA,GAMMA,UC,UR,OM2,TFFTXZ,PREX,PREZ)
+      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,4)
+
+      RETURN
+      END SUBROUTINE DNS_STREAMFUNC
 
 
 C=======================================================================
@@ -238,13 +254,14 @@ C-- Scalars -------------------------------------------------------------
       CALL FIELD2PIX(PIXARRL,PXL,PYL,UR,75.0,N3D2L,N3D2L,1)
       CALL FIELD2KIN(PIXARRL,PXL,PYL,UR,125.0,N3D2L,N3D2L)
       CALL OM2PHYS(NLOCAL,NLOCAL,UC,UR,OM2L,TFFTXZL,PREXL,PREZL)
-      CALL STREAMFUNC(NLOCAL,NLOCAL,ALFAL,GAMMAL,UC,UR,OM2L,
-     &                TFFTXZL,PREXL,PREZL)
+      CALL STREAMFUNC(NLOCAL,NLOCAL,ALFAL,GAMMAL,UC,UR,OM2L,TFFTXZL,PREXL,PREZL)
+      CALL FIELD2PIX(PIXARRL,PX,PY,UR,75.0,N3D2,N3D2,4)
 
       WRITE(*,*) 'Pixels sample:',PIXARRL(1,1),PIXARRL(64,64)
       WRITE(*,*) 'Final T=',TL,' CN=',CNL,' DT=',DTL,' VISC=',VISCL
       WRITE(*,*) 'Final Max |UR|=',MAXVAL(ABS(UR))
       WRITE(*,*) 'Final Max |OM2|=',MAXVAL(ABS(OM2L))
+      WRITE(*,*) 'Final Max |PIXARR|=',MAXVAL(ABS(PIXARRL))
       RETURN
       END SUBROUTINE TEST_DNS
 C=======================================================================
