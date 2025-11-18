@@ -16,7 +16,6 @@ class FortranDnsSimulator:
     Fortran side is assumed to expose:
       - dns_init(n, re, k0)
       - dns_step(t, dt, cn)
-      - dns_snapshot(nx, ny, comp)  -> UR(:,:,comp) as REAL array
     """
 
     # Variable selector constants (used by the Qt GUI)
