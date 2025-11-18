@@ -71,6 +71,7 @@ C--- Original initialization sequence ----------------------------------
       WRITE(*,*) '--- DNS_INIT called ---'
 
       CALL PAO(UC,ALFA,GAMMA,N,N,RE,K0,VISC)
+      WRITE(*,*) 'N=',N
       WRITE(*,*) 'After PAO: VISC=',VISC
       WRITE(*,*) '  Max |UC|=',MAXVAL(ABS(UC))
 
@@ -223,6 +224,7 @@ C-- Scalars -------------------------------------------------------------
       IFNL    = 1
 
       WRITE(*,*) '--- INITIALIZING DNS (TEST_DNS) ---'
+      WRITE(*,*) 'NLOCAL=',NLOCAL
 
       CALL PAO(UC,ALFAL,GAMMAL,NLOCAL,NEL,REL,K0L,VISCL)
       WRITE(*,*) 'After PAO: VISC=',VISCL
