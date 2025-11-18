@@ -9,11 +9,13 @@ from PyQt6.QtCore import (
     pyqtSignal,
     QObject,
     QTimer,
+    QSize,
 )
 from PyQt6.QtGui import (
     QImage,
     QPixmap,
     QFontDatabase,
+    QIcon,
 )
 from PyQt6.QtWidgets import (
     QApplication,
@@ -92,8 +94,19 @@ class MainWindow(QMainWindow):
         self.image_label = QLabel()
         self.image_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.start_button = QPushButton("Start")
-        self.stop_button = QPushButton("Stop")
+        # Small icon buttons instead of large text buttons
+        self.start_button = QPushButton()
+        self.start_button.setIcon(QIcon.fromTheme("media-playback-start"))
+        self.start_button.setToolTip("Start simulation")
+        self.start_button.setFixedSize(36, 36)
+        self.start_button.setIconSize(QSize(24, 24))
+
+        self.stop_button = QPushButton()
+        self.stop_button.setIcon(QIcon.fromTheme("media-playback-stop"))
+        self.stop_button.setToolTip("Stop simulation")
+        self.stop_button.setFixedSize(36, 36)
+        self.stop_button.setIconSize(QSize(24, 24))
+
         self.step_button = QPushButton("Step")
         self.reset_button = QPushButton("Reset")
         self.save_button = QPushButton("Save Frame")
@@ -228,30 +241,31 @@ class MainWindow(QMainWindow):
     # ---- helpers ----------------------------------------------------
 
     def _update_image(self, pixels: np.ndarray) -> None:
+        """Render packed 32-bit grayscale from Fortran FIELD2PIX into the QLabel."""
         if pixels.ndim != 2:
-            raise ValueError(f"Expected 2D grayscale array, got {pixels.shape}")
+            raise ValueError(f"Expected 2D array, got {pixels.shape}")
 
+        # FIELD2PIX packs the gray level L (0–255) into all three bytes:
+        # PIXEL = L * (1 + 256 + 65536) = 0x00LLLLLL
+        # We only need the low byte for an 8-bit QImage.
         if pixels.dtype != np.uint8:
-            pixels = pixels.astype(np.uint8, copy=False)
+            pixels = (pixels & 0xFF).astype(np.uint8, copy=False)
 
         h, w = pixels.shape
         pixels_c = np.ascontiguousarray(pixels)
 
         qimg = QImage(
-            pixels_c.data, w, h, w,
+            pixels_c.data,
+            w,
+            h,
+            w,  # bytes per line
             QImage.Format.Format_Grayscale8,
         )
 
         self._last_pixels = pixels_c
         pixmap = QPixmap.fromImage(qimg)
+        self.image_label.setPixmap(pixmap)
 
-        scaled_pixmap = pixmap.scaled(
-            w * 3, h * 3,
-            Qt.AspectRatioMode.KeepAspectRatio,
-            Qt.TransformationMode.SmoothTransformation,
-        )
-
-        self.image_label.setPixmap(scaled_pixmap)
 
     def _update_status(self, t: float, it: int, fps: Optional[float]) -> None:
         # Monospaced + fixed width → no text jumping

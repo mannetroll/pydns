@@ -78,30 +78,12 @@ class FortranDnsSimulator:
     # ------------------------------------------------------------------
     def _snapshot(self, comp: int) -> np.ndarray:
         """
-        Raw snapshot from Fortran: UR(:,:,comp).
-
-        comp is the Fortran component index:
-          1 -> U, 2 -> V, 3 -> W/out-of-plane (assumed).
+        Raw snapshot from Fortran, now using dns_frame with 3× scale-up.
+        comp is currently ignored on the Fortran side.
         """
-        plane = dns_fortran.dns_snapshot(self.nx, self.ny, int(comp))
+        plane = dns_fortran.dns_frame(3 * 128, 3 * 128, comp)
         plane = np.array(plane, copy=False)
         return plane
-
-    # ------------------------------------------------------------------
-    def _to_grayscale(self, plane: np.ndarray) -> np.ndarray:
-        """
-        Normalize a real-valued plane to 0–255 uint8, C-contiguous.
-
-        Returns a 2D array of shape (nx, ny).
-        """
-        vmin = float(plane.min())
-        vmax = float(plane.max())
-        if vmax > vmin:
-            norm = (plane - vmin) / (vmax - vmin)
-        else:
-            norm = np.zeros_like(plane, dtype=np.float32)
-        pixels = (norm * 255.0).astype(np.uint8, order="C")
-        return pixels
 
     # ------------------------------------------------------------------
     def make_pixels(self, comp: int = 1) -> np.ndarray:
@@ -109,8 +91,7 @@ class FortranDnsSimulator:
         Convenience: comp-based visualization.
         comp = 1,2,3 (UR components).
         """
-        plane = self._snapshot(comp)
-        return self._to_grayscale(plane)
+        return self._snapshot(comp)
 
     # ------------------------------------------------------------------
     def make_pixels_component(self, var: int | None = None) -> np.ndarray:
@@ -130,19 +111,20 @@ class FortranDnsSimulator:
         elif var == self.VAR_V:
             plane = self._snapshot(2)
         elif var == self.VAR_ENERGY:
-            # approximate kinetic energy magnitude from three components
-            u = self._snapshot(1)
-            v = self._snapshot(2)
-            w = self._snapshot(3)
-            plane = np.sqrt(u * u + v * v + w * w)
-        elif var in (self.VAR_OMEGA, self.VAR_STREAM):
-            # TODO: call dedicated Fortran kernels (OM2PHYS / STREAMFUNC)
+            # TODO: call dedicated Fortran kernels FIELD2KIN
+            plane = self._snapshot(1)
+        elif var == self.VAR_OMEGA:
+            # TODO: call dedicated Fortran kernels OM2PHYS
+            # For now: just show U-component so GUI plumbing works.
+            plane = self._snapshot(1)
+        elif var == self.VAR_STREAM:
+            # TODO: call dedicated Fortran kernels STREAMFUNC
             # For now: just show U-component so GUI plumbing works.
             plane = self._snapshot(1)
         else:
             plane = self._snapshot(1)
 
-        return self._to_grayscale(plane)
+        return plane
 
     # ------------------------------------------------------------------
     def get_frame_pixels(self) -> np.ndarray:
@@ -185,3 +167,11 @@ if __name__ == "__main__":
 
     pix = sim.make_pixels_component()
     print("Pixels:", pix.shape, pix[0, 0], pix[10, 10])
+
+    arr = sim._snapshot(1)
+    np.savetxt(
+        "snapshot.csv",
+        arr,
+        fmt="%d",  # integer formatting
+        delimiter=","
+    )

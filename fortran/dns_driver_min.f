@@ -22,7 +22,6 @@ C--- Global arrays (workspace) -----------------------------------------
       REAL,    SAVE :: PREZ(15+3*NMAX)
       REAL,    SAVE :: WSAVE(15+NMAX)
       REAL,    SAVE :: UR(2+3*NMAX/2,3*NMAX/2,3)
-      INTEGER, SAVE :: PIXARR_INT(3*NMAX,3*NMAX)
 
 C--- Legacy data layout: UC and UR share storage -----------------------
       EQUIVALENCE (UC,UR)
@@ -67,7 +66,6 @@ C--- Zero work arrays just in case -------------------------------------
       PREX    = 0.0
       PREZ    = 0.0
       WSAVE   = 0.0
-      PIXARR_INT = 0
 
 C--- Original initialization sequence ----------------------------------
       WRITE(*,*) '--- DNS_INIT called ---'
@@ -123,14 +121,14 @@ C=======================================================================
 C=======================================================================
 C  DNS_FRAME  --  Fill a pixarr(nx,ny) supplied from Python
 C=======================================================================
-      SUBROUTINE DNS_FRAME(PIXARR,NPX,NPY)
+      SUBROUTINE DNS_FRAME(PIXARR,NPX,NPY,COMP)
       USE DNS_WORKSPACE
       IMPLICIT NONE
-      INTEGER NPX,NPY
+      INTEGER NPX,NPY,COMP
       INTEGER PIXARR(NPX,NPY)
 
 C  Simple visualization via FIELD2PIX
-       CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, 1)
+       CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, COMP)
 
       RETURN
       END SUBROUTINE DNS_FRAME

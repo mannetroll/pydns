@@ -13,8 +13,8 @@ python module dns_fortran
             real intent(inout) :: cn
         end subroutine dns_step
 
-        subroutine dns_frame(pixarr, px, py)
-            integer, intent(in) :: px, py
+        subroutine dns_frame(pixarr, px, py, comp)
+            integer, intent(in) :: px, py, comp
             integer, intent(out) :: pixarr(px,py)
         end subroutine dns_frame
 
