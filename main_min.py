@@ -211,15 +211,11 @@ class MainWindow(QMainWindow):
     # ---- worker callbacks -------------------------------------------
 
     def on_frame_ready(self, pixels: np.ndarray, t: float, it: int) -> None:
-        now = time.time()
         fps: Optional[float] = None
 
-        if self._last_frame_time is not None:
-            dt = now - self._last_frame_time
-            if dt > 0:
-                fps = 1.0 / dt
-
-        self._last_frame_time = now
+        # FPS based on total frames generated divided by total simulation time
+        if t > 0.0:
+            fps = it / t
 
         self._update_image(pixels)
 
@@ -259,9 +255,9 @@ class MainWindow(QMainWindow):
 
     def _update_status(self, t: float, it: int, fps: Optional[float]) -> None:
         # Monospaced + fixed width → no text jumping
-        fps_str = f"{fps:7.2f}" if fps is not None else "     n/a"
+        fps_str = f"{fps:4.0f}" if fps is not None else "     n/a"
         it_str = f"{it:4d}"
-        t_str = f"{t:4.3f}"
+        t_str = f"{t:4.2f}"
 
         text = f"FPS: {fps_str} | Iter: {it_str} | T: {t_str}"
         self.status.showMessage(text)
