@@ -272,9 +272,8 @@ C=======================================================================
 C=======================================================================
 C  RUN_DNS  --  simple entry point kept for backward compatibility
 C=======================================================================
-      SUBROUTINE RUN_DNS(NIN,REIN,K0IN)
+      SUBROUTINE RUN_DNS(REIN,K0IN)
       IMPLICIT NONE
-      INTEGER NIN
       REAL    REIN,K0IN
 
 C  Current implementation just calls TEST_DNS and ignores arguments.

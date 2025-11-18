@@ -33,8 +33,7 @@ python module dns_fortran
             integer, intent(out) :: pixarr(px,py)
         end subroutine dns_streamfunc
 
-        subroutine run_dns(n, re, k0)
-            integer intent(in) :: n
+        subroutine run_dns(re, k0)
             real    intent(in) :: re
             real    intent(in) :: k0
         end subroutine run_dns
