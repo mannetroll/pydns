@@ -166,6 +166,10 @@ class MainWindow(QMainWindow):
         self._last_frame_time: Optional[float] = None
         self._update_image(self.sim.get_frame_pixels())
 
+        # Start in OMEGA mode (index 3)
+        self.variable_combo.setCurrentIndex(3)
+        self.sim.set_variable(FortranDnsSimulator.VAR_OMEGA)
+
         # Start worker thread
         self.thread.start()
         self.worker.start()  # auto-start simulation
