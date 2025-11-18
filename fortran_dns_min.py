@@ -26,7 +26,7 @@ class FortranDnsSimulator:
     VAR_OMEGA = 3       # currently mapped to U (TODO)
     VAR_STREAM = 4      # currently mapped to U (TODO)
 
-    def __init__(self, n: int = 128, re: float = 1000.0, k0: float = 10.0):
+    def __init__(self, n: int = 192, re: float = 1000.0, k0: float = 10.0):
         self.n = int(n)
         self.re = float(re)
         self.k0 = float(k0)
