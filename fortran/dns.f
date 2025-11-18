@@ -42,6 +42,7 @@ C     Scalars
       IFN = 1
 
       WRITE(*,*) '--- INITIALIZING DNS ---'
+      WRITE(*,*) 'N=',N
 
 C===== Initialization sequence =========================================
 
