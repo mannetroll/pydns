@@ -168,6 +168,7 @@ class MainWindow(QMainWindow):
 
         # Start worker thread
         self.thread.start()
+        self.worker.start()  # auto-start simulation
 
     # ---- GUI slots --------------------------------------------------
 
@@ -191,6 +192,7 @@ class MainWindow(QMainWindow):
         self._last_frame_time = None
         self._update_image(self.sim.get_frame_pixels())
         self._update_status(self.sim.get_time(), self.sim.get_iteration(), fps=None)
+        self.worker.start()  # auto-restart after reset
 
     def on_save_clicked(self) -> None:
         path, _ = QFileDialog.getSaveFileName(
