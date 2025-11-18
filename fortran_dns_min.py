@@ -111,13 +111,11 @@ class FortranDnsSimulator:
         elif var == self.VAR_V:
             plane = self._snapshot(2)
         elif var == self.VAR_ENERGY:
-            # TODO: call dedicated Fortran kernels FIELD2KIN
             plane = dns_fortran.dns_kinetic(3 * 128, 3 * 128)
             plane = np.array(plane, copy=False)
         elif var == self.VAR_OMEGA:
-            # TODO: call dedicated Fortran kernels OM2PHYS
-            # For now: just show U-component so GUI plumbing works.
-            plane = self._snapshot(1)
+            plane = dns_fortran.dns_om2phys(3 * 128, 3 * 128)
+            plane = np.array(plane, copy=False)
         elif var == self.VAR_STREAM:
             # TODO: call dedicated Fortran kernels STREAMFUNC
             # For now: just show U-component so GUI plumbing works.

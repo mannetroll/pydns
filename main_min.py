@@ -114,7 +114,7 @@ class MainWindow(QMainWindow):
 
         self.variable_combo = QComboBox()
         self.variable_combo.addItems(
-            ["U velocity", "V velocity", "Kinetic energy", "Omega", "Stream function"]
+            ["U", "V", "K", "Ω", "φ"]
         )
 
         # Layout

@@ -128,7 +128,7 @@ C=======================================================================
       INTEGER PIXARR(NPX,NPY)
 
 C  Simple visualization via FIELD2PIX
-       CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, COMP)
+      CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, COMP)
 
       RETURN
       END SUBROUTINE DNS_FRAME
@@ -143,11 +143,26 @@ C=======================================================================
       INTEGER PIXARR(NPX,NPY)
 
 C  Simple visualization via FIELD2KIN
-	   CALL FIELD2KIN(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2)
+      CALL FIELD2KIN(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2)
 
       RETURN
       END SUBROUTINE DNS_KINETIC
 
+C=======================================================================
+C  DNS_OM2PHYS -- Fill a pixarr(nx,ny) supplied from Python
+C=======================================================================
+      SUBROUTINE DNS_OM2PHYS(PIXARR,NPX,NPY)
+      USE DNS_WORKSPACE
+      IMPLICIT NONE
+      INTEGER NPX,NPY
+      INTEGER PIXARR(NPX,NPY)
+
+C  Simple visualization via OM2PHYS
+      CALL OM2PHYS(N, N, UC, UC, OM2, TFFTXZ, PREX, PREZ)
+      CALL FIELD2PIX(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2, 3)
+
+      RETURN
+      END SUBROUTINE DNS_OM2PHYS
 
 
 C=======================================================================

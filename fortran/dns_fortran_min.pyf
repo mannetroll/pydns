@@ -23,6 +23,11 @@ python module dns_fortran
             integer, intent(out) :: pixarr(px,py)
         end subroutine dns_kinetic
 
+        subroutine dns_om2phys(pixarr, px, py)
+            integer, intent(in) :: px, py
+            integer, intent(out) :: pixarr(px,py)
+        end subroutine dns_om2phys
+
         subroutine run_dns(n, re, k0)
             integer intent(in) :: n
             real    intent(in) :: re
