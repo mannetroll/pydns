@@ -133,6 +133,22 @@ C  Simple visualization via FIELD2PIX
       RETURN
       END SUBROUTINE DNS_FRAME
 
+C=======================================================================
+C  DNS_KINETIC  --  Fill a pixarr(nx,ny) supplied from Python
+C=======================================================================
+      SUBROUTINE DNS_KINETIC(PIXARR,NPX,NPY)
+      USE DNS_WORKSPACE
+      IMPLICIT NONE
+      INTEGER NPX,NPY
+      INTEGER PIXARR(NPX,NPY)
+
+C  Simple visualization via FIELD2KIN
+	   CALL FIELD2KIN(PIXARR, PX, PY, UR, 75.0, N3D2, N3D2)
+
+      RETURN
+      END SUBROUTINE DNS_KINETIC
+
+
 
 C=======================================================================
 

@@ -18,6 +18,11 @@ python module dns_fortran
             integer, intent(out) :: pixarr(px,py)
         end subroutine dns_frame
 
+        subroutine dns_kinetic(pixarr, px, py)
+            integer, intent(in) :: px, py
+            integer, intent(out) :: pixarr(px,py)
+        end subroutine dns_kinetic
+
         subroutine run_dns(n, re, k0)
             integer intent(in) :: n
             real    intent(in) :: re

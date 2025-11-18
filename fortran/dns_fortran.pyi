@@ -39,16 +39,9 @@ def dns_step(t: NDReal, dt: NDReal, cn: NDReal) -> None: ...
 #   self.cn = float(cn)
 
 
-def dns_frame(px: int, py: int) -> NDInt32: ...
-# Fortran:
-#   subroutine dns_frame(pixarr, px, py)
-#       integer, intent(in)  :: px, py
-#       integer, intent(out) :: pixarr(px,py)
-#   end subroutine dns_frame
-#
-# Python usage:
-#   pixarr = dns_fortran.dns_frame(px, py)
+def dns_frame(px: int, py: int, comp: int) -> NDInt32: ...
 
+def dns_kinetic(px: int, py: int) -> NDInt32: ...
 
 def run_dns(n: int, re: float, k0: float) -> None: ...
 # Fortran:
