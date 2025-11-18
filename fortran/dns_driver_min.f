@@ -6,7 +6,7 @@ C***********************************************************************
       MODULE DNS_WORKSPACE
       IMPLICIT NONE
 C--- Global limits -----------------------------------------------------
-      INTEGER, PARAMETER :: NMAX = 128
+      INTEGER, PARAMETER :: NMAX = 256
 
 C--- Global scalar state -----------------------------------------------
       INTEGER, SAVE :: N, N3D2, PX, PY, IT, IFN
@@ -176,7 +176,7 @@ C=======================================================================
 
 C  Simple visualization via OM2PHYS
       CALL STREAMFUNC(N,N,ALFA,GAMMA,UC,UR,OM2,TFFTXZ,PREX,PREZ)
-      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,4)
+      CALL FIELD2PIX(PIXARR,PX,PY,UR,200.0,N3D2,N3D2,4)
 
       RETURN
       END SUBROUTINE DNS_STREAMFUNC
@@ -192,7 +192,7 @@ C=======================================================================
       USE DNS_WORKSPACE
       IMPLICIT NONE
       INTEGER NLOCAL, N3D2L, PXL, PYL
-      PARAMETER (NLOCAL = 64)
+      PARAMETER (NLOCAL = 128)
       PARAMETER (N3D2L = 3*NLOCAL/2)
       PARAMETER (PXL = N3D2L*2)
       PARAMETER (PYL = N3D2L*2)
@@ -259,7 +259,7 @@ C-- Scalars -------------------------------------------------------------
       CALL STREAMFUNC(NLOCAL,NLOCAL,ALFAL,GAMMAL,UC,UR,OM2L,TFFTXZL,PREXL,PREZL)
       CALL FIELD2PIX(PIXARRL,PX,PY,UR,75.0,N3D2,N3D2,4)
 
-      WRITE(*,*) 'Pixels sample:',PIXARRL(1,1),PIXARRL(64,64)
+      WRITE(*,*) 'Pixels sample:',PIXARRL(1,1),PIXARRL(NLOCAL,NLOCAL)
       WRITE(*,*) 'Final T=',TL,' CN=',CNL,' DT=',DTL,' VISC=',VISCL
       WRITE(*,*) 'Final Max |UR|=',MAXVAL(ABS(UR))
       WRITE(*,*) 'Final Max |OM2|=',MAXVAL(ABS(OM2L))
@@ -278,7 +278,7 @@ C=======================================================================
 
 C  Current implementation just calls TEST_DNS and ignores arguments.
 C  This preserves the behaviour you had when calling:
-C      dns_fortran.run_dns(64,1000.0,10.0)
+C      dns_fortran.run_dns(1000.0,10.0)
       CALL TEST_DNS()
       RETURN
       END SUBROUTINE RUN_DNS
