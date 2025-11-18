@@ -81,7 +81,7 @@ class FortranDnsSimulator:
         Raw snapshot from Fortran, now using dns_frame with 3× scale-up.
         comp is currently ignored on the Fortran side.
         """
-        plane = dns_fortran.dns_frame(3 * 128, 3 * 128, comp)
+        plane = dns_fortran.dns_frame(3 * self.n, 3 * self.n, comp)
         plane = np.array(plane, copy=False)
         return plane
 
@@ -111,13 +111,13 @@ class FortranDnsSimulator:
         elif var == self.VAR_V:
             plane = self._snapshot(2)
         elif var == self.VAR_ENERGY:
-            plane = dns_fortran.dns_kinetic(3 * 128, 3 * 128)
+            plane = dns_fortran.dns_kinetic(3 * self.n, 3 * self.n)
             plane = np.array(plane, copy=False)
         elif var == self.VAR_OMEGA:
-            plane = dns_fortran.dns_om2phys(3 * 128, 3 * 128)
+            plane = dns_fortran.dns_om2phys(3 * self.n, 3 * self.n)
             plane = np.array(plane, copy=False)
         elif var == self.VAR_STREAM:
-            plane = dns_fortran.dns_streamfunc(3 * 128, 3 * 128)
+            plane = dns_fortran.dns_streamfunc(3 * self.n, 3 * self.n)
             plane = np.array(plane, copy=False)
         else:
             plane = self._snapshot(1)
