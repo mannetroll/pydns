@@ -47,3 +47,4 @@ Thumbs.db
 /fortran/showapp
 /fortran/dnsapp
 *.png
+/fortran/dns_workspace.mod

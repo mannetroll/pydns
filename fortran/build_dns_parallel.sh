@@ -1,15 +1,20 @@
 #!/bin/bash
 
+set -euo pipefail
+
 export FC=gfortran
 
 # Common flags for old F77 / fixed-form
-export FFLAGS_COMMON="-std=legacy -ffixed-line-length-none -Wno-tabs \
-  -fno-automatic -finit-local-zero -fallow-argument-mismatch -w"
+COMMON="-std=legacy -ffixed-line-length-none -Wno-tabs \
+  -fallow-argument-mismatch -w"
 
-# Release flags + auto loop parallelization
-# -fopt-info-optimized
-export FFLAGS="$FFLAGS_COMMON -Ofast -mcpu=native -funroll-loops -flto \
-  -ftree-parallelize-loops=8"
+# DNS / driver code: legacy semantics (SAVE-like locals)
+DNS_FLAGS="$COMMON -fno-automatic -finit-local-zero \
+  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
+
+# FFT library: needs automatic locals for thread safety
+VFFT_FLAGS="$COMMON -frecursive \
+  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
 
 # Find where libgomp lives and link to it explicitly
 LIBGOMP_PATH=$(gfortran -print-file-name=libgomp.dylib)
@@ -21,10 +26,24 @@ export LDFLAGS="-L${LIBGOMP_DIR} -lgomp -Wl,-rpath,${LIBGOMP_DIR}"
 # Tell NumPy to append (not overwrite) flags
 export NPY_DISTUTILS_APPEND_FLAGS=1
 
-# Use up to 8 threads at runtime for auto-parallelized loops
-export OMP_NUM_THREADS=8
+# Runtime OpenMP threads
+export OMP_NUM_THREADS=4
 
-rm -f dns_fortran.cpython-313-darwin.so
+rm -f dns_fortran*.so *.o
 
-python -m numpy.f2py -c dns_fortran_min.pyf pao.f vfft.f visasub.f dns_driver_min.f
+echo "Compiling Fortran objects with OpenMP..."
 
+# vfft: compiled separately, re-entrant
+$FC $VFFT_FLAGS -c vfft.f
+
+# DNS core + driver: with -fno-automatic
+$FC $DNS_FLAGS  -c pao.f visasub3d.f dns_driver_min3d.f
+
+echo "Building f2py module dns_fortran (with OpenMP)..."
+
+python -m numpy.f2py -c \
+  dns_fortran_min.pyf \
+  pao.o visasub3d.o dns_driver_min3d.o vfft.o \
+  -lgomp
+
+echo "Done. Import with:  import dns_fortran"
