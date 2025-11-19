@@ -16,6 +16,11 @@ class FortranDnsSimulator:
     Fortran side is assumed to expose:
       - dns_init(n, re, k0)
       - dns_step(t, dt, cn)
+      - dns_frame(px, py, comp)
+      - dns_kinetic(px, py)
+      - dns_om2phys(px, py)
+      - dns_streamfunc(px, py)
+      - dns_set_ur_real(field, nx, ny)
     """
 
     # Variable selector constants (used by the Qt GUI)

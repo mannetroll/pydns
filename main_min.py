@@ -162,8 +162,9 @@ class MainWindow(QMainWindow):
         self.resize(self.sim.px + 40, self.sim.py + 120)
 
         # Initial frame
-        self._last_pixels: np.ndarray | None = None
+        self._last_pixels: Optional[np.ndarray] = None
         self._last_frame_time: Optional[float] = None
+        self._sim_start_time: Optional[float] = None
         self._update_image(self.sim.get_frame_pixels())
 
         # Start in OMEGA mode (index 3)
@@ -172,12 +173,14 @@ class MainWindow(QMainWindow):
 
         # Start worker thread
         self.thread.start()
+        self._sim_start_time = time.time()
         self.worker.start()  # auto-start simulation
 
     # ---- GUI slots --------------------------------------------------
 
     def on_start_clicked(self) -> None:
         self._last_frame_time = None
+        self._sim_start_time = time.time()
         self.worker.start()
 
     def on_stop_clicked(self) -> None:
@@ -196,6 +199,7 @@ class MainWindow(QMainWindow):
         self._last_frame_time = None
         self._update_image(self.sim.get_frame_pixels())
         self._update_status(self.sim.get_time(), self.sim.get_iteration(), fps=None)
+        self._sim_start_time = time.time()
         self.worker.start()  # auto-restart after reset
 
     def on_save_clicked(self) -> None:
@@ -232,9 +236,11 @@ class MainWindow(QMainWindow):
     def on_frame_ready(self, pixels: np.ndarray, t: float, it: int) -> None:
         fps: Optional[float] = None
 
-        # FPS based on total frames generated divided by total simulation time
-        if t > 0.0:
-            fps = it / t
+        # FPS based on real elapsed wall-clock time since simulation start
+        if self._sim_start_time is not None:
+            elapsed = time.time() - self._sim_start_time
+            if elapsed > 0.0:
+                fps = it / elapsed
 
         self._update_image(pixels)
 
