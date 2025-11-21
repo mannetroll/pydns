@@ -1,5 +1,6 @@
 import sys
 import time
+from time import sleep
 from typing import Optional
 import numpy as np
 
@@ -16,7 +17,7 @@ from PyQt6.QtGui import (
     QImage,
     QPixmap,
     QFontDatabase,
-    QIcon,
+    QIcon, QGuiApplication,
 )
 from PyQt6.QtWidgets import (
     QApplication,
@@ -292,13 +293,11 @@ class MainWindow(QMainWindow):
         self.status.showMessage(txt)
         #print(txt)
 
-    def _position_window(self):
-        screen = self.screen() or QApplication.primaryScreen()
-        if screen:
-            g = screen.availableGeometry()
-            fr = self.frameGeometry()
-            fr.moveCenter(g.center())
-            self.move(fr.topLeft())
+    def position_window(self):
+        screen = QGuiApplication.primaryScreen().availableGeometry()
+        frame = self.frameGeometry()
+        frame.moveCenter(screen.center())
+        self.move(frame.topLeft())
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -325,10 +324,16 @@ class MainWindow(QMainWindow):
 def main() -> None:
     app = QApplication(sys.argv)
     window = MainWindow()
-    window.show()
-    QTimer.singleShot(0, window._position_window)
-    sys.exit(app.exec())
+    window.adjustSize()          # force layout to compute size
 
+    # center based on the calculated size
+    screen = app.primaryScreen().availableGeometry()
+    g = window.geometry()
+    g.moveCenter(screen.center())
+    window.setGeometry(g)
+
+    window.show()                # already centered when it appears
+    sys.exit(app.exec())
 
 if __name__ == "__main__":
     main()
