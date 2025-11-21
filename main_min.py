@@ -191,8 +191,8 @@ class MainWindow(QMainWindow):
         self.variable_combo.setCurrentIndex(3)
         self.sim.set_variable(FortranDnsSimulator.VAR_OMEGA)
 
-        # Color Magma mode (index 4)
-        self.cmap_combo.setCurrentIndex(4)
+        # Color Turbo mode (index 5)
+        self.cmap_combo.setCurrentIndex(5)
 
         # Start worker thread
         self.thread.start()
@@ -299,6 +299,27 @@ class MainWindow(QMainWindow):
             fr = self.frameGeometry()
             fr.moveCenter(g.center())
             self.move(fr.topLeft())
+
+    def keyPressEvent(self, event):
+        key = event.key()
+
+        # ----- ROTATE VARIABLE (P) -----
+        if key == Qt.Key.Key_P:
+            idx = self.variable_combo.currentIndex()
+            count = self.variable_combo.count()
+            new_idx = (idx + 1) % count
+            self.variable_combo.setCurrentIndex(new_idx)
+            return
+
+        # ----- ROTATE COLORMAP (C) -----
+        if key == Qt.Key.Key_C:
+            idx = self.cmap_combo.currentIndex()
+            count = self.cmap_combo.count()
+            new_idx = (idx + 1) % count
+            self.cmap_combo.setCurrentIndex(new_idx)
+            return
+
+        super().keyPressEvent(event)
 
 
 def main() -> None:
