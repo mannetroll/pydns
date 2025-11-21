@@ -179,7 +179,7 @@ COLOR_MAPS = {
     "Magma": MAGMA_LUT,
     "Turbo": TURBO_LUT,
     "Fire": FIRE_LUT,
-    "Doom Fire": DOOM_FIRE_LUT,
+    "Doom": DOOM_FIRE_LUT,
 }
 
 DEFAULT_CMAP_NAME = "Doom Fire"
