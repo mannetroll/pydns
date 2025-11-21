@@ -30,7 +30,7 @@ class FortranDnsSimulator:
     VAR_OMEGA = 3       # currently mapped to U (TODO)
     VAR_STREAM = 4      # currently mapped to U (TODO)
 
-    def __init__(self, n: int = 192, re: float = 1000.0, k0: float = 10.0):
+    def __init__(self, n: int = 192, re: float = 10000.0, k0: float = 10.0):
         self.n = int(n)
         self.re = float(re)
         self.k0 = float(k0)
@@ -47,6 +47,7 @@ class FortranDnsSimulator:
         self.t = np.float32(0.0)
         self.dt = np.float32(0.0)
         self.cn = np.float32(1.0)
+        self.iteration = 0
 
         # which field to visualize
         self.current_var = self.VAR_U
@@ -66,6 +67,7 @@ class FortranDnsSimulator:
         self.t = float(t)
         self.dt = float(dt)
         self.cn = float(cn)
+        self.iteration += 1
 
     # ------------------------------------------------------------------
     def reset_field(self) -> None:
@@ -73,6 +75,7 @@ class FortranDnsSimulator:
         self.t = np.float32(0.0)
         self.dt = np.float32(0.0)
         self.cn = np.float32(1.0)
+        self.iteration = 0
         dns_fortran.dns_init(self.n, self.re, self.k0)
 
     # ------------------------------------------------------------------
@@ -149,9 +152,7 @@ class FortranDnsSimulator:
         return float(self.t)
 
     def get_iteration(self) -> int:
-        if self.dt > 0:
-            return int(round(self.t / self.dt))
-        return 0
+        return self.iteration
 
     # ---------- PNG EXPORT -------------------------------------------
     def save_png(self, path: Union[str, Path], comp: int = 1) -> None:

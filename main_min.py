@@ -38,13 +38,14 @@ class SimulationWorker(QObject):
     Runs the DNS simulation in its own thread, emitting frames as they are ready.
     """
 
-    frame_ready = pyqtSignal(float, int)  # time, iteration
+    frame_ready = pyqtSignal(float, int, float)  # t, it, fps
     finished = pyqtSignal()
 
     def __init__(self, simulator: FortranDnsSimulator, parent=None) -> None:
         super().__init__(parent)
         self.sim = simulator
         self._running = False
+        self._start_time = time.time()
 
     def start(self) -> None:
         self._running = True
@@ -71,12 +72,22 @@ class SimulationWorker(QObject):
             t = self.sim.get_time()
             it = self.sim.get_iteration()
 
-            self.frame_ready.emit(t, it)
+            # ---- AUTO-RESTART -------------------------------------------------
+            if it >= 1000:  # or 2000
+                self.sim.reset_field()
+                self._start_time = time.time()
+                last_ts = time.time()
+            # -------------------------------------------------------------------
+
+            elapsed = time.time() - self._start_time
+            fps = it / elapsed if elapsed > 0 else 0.0
+            self.frame_ready.emit(t, it, fps)
 
             now = time.time()
             dt = now - last_ts
-            if dt < 0.005:
-                time.sleep(0.005 - dt)
+            threashold = 0.003
+            if dt < threashold:
+                time.sleep(threashold - dt)
             last_ts = now
 
         self.finished.emit()
@@ -160,7 +171,6 @@ class MainWindow(QMainWindow):
 
         self._last_pixels = None
         self._last_frame_time = None
-        self._sim_start_time = None
 
         # initial draw
         self._update_image(self.sim.get_frame_pixels())
@@ -171,14 +181,12 @@ class MainWindow(QMainWindow):
 
         # Start worker thread
         self.thread.start()
-        self._sim_start_time = time.time()
         self.worker.start()  # auto-start simulation
 
     # ---- GUI slots --------------------------------------------------
 
     def on_start_clicked(self) -> None:
         self._last_frame_time = None
-        self._sim_start_time = time.time()
         self.worker.start()
 
     def on_stop_clicked(self) -> None:
@@ -197,7 +205,6 @@ class MainWindow(QMainWindow):
         self.sim.reset_field()
         self._update_image(self.sim.get_frame_pixels())
         self._update_status(self.sim.get_time(), self.sim.get_iteration(), None)
-        self._sim_start_time = time.time()
         self.worker.start()  # auto-restart after reset
 
     def on_save_clicked(self) -> None:
@@ -230,13 +237,7 @@ class MainWindow(QMainWindow):
 
     # ---- worker callbacks -------------------------------------------
 
-    def on_frame_ready(self, t: float, it: int) -> None:
-        fps = None
-        if self._sim_start_time:
-            elapsed = time.time() - self._sim_start_time
-            if elapsed > 0:
-                fps = it / elapsed
-
+    def on_frame_ready(self, t: float, it: int, fps: float):
         self._status_update_counter += 1
         if self._status_update_counter >= 10:
             pixels = self.sim.get_frame_pixels()
@@ -253,8 +254,8 @@ class MainWindow(QMainWindow):
     def _update_status(self, t: float, it: int, fps: Optional[float]):
         fps_str = f"{fps:4.0f}" if fps is not None else " n/a"
         txt = f"FPS: {fps_str} | Iter: {it:4d} | T: {t:4.2f}"
-        #print(txt)
         self.status.showMessage(txt)
+        #print(txt)
 
     def _position_window(self):
         screen = self.screen() or QApplication.primaryScreen()
