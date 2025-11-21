@@ -75,7 +75,7 @@ class SimulationWorker(QObject):
             it = self.sim.get_iteration()
 
             # ---- AUTO-RESTART -------------------------------------------------
-            if it >= 1000:  # or 2000
+            if it >= 3000:  # or 2000
                 self.sim.reset_field()
                 self._start_time = time.time()
                 last_ts = time.time()
