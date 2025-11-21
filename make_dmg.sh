@@ -1,0 +1,78 @@
+#!/bin/bash
+set -euo pipefail
+
+#
+# make_dmg.sh
+#
+# Creates a macOS DMG installer containing:
+#   - pydns.app  (from dist/)
+#   - Applications symlink
+#   - README.txt
+#
+# Usage:
+#   1. Build the app:
+#        uv run pyinstaller pydns.spec
+#   2. Create DMG:
+#        ./make_dmg.sh
+#
+
+APP_NAME="pydns"
+APP_BUNDLE="dist/${APP_NAME}.app"
+DMG_DIR="dmg_root"
+DMG_NAME="${APP_NAME}.dmg"
+VOLNAME="pydns"
+
+# ----------------------------------------------------------
+# 0. Safety checks
+# ----------------------------------------------------------
+if [ ! -d "${APP_BUNDLE}" ]; then
+    echo "ERROR: ${APP_BUNDLE} does not exist."
+    echo "Run:  uv run pyinstaller pydns.spec"
+    exit 1
+fi
+
+echo "==> Creating DMG for ${APP_BUNDLE}"
+
+# ----------------------------------------------------------
+# 1. Prepare DMG root folder
+# ----------------------------------------------------------
+rm -rf "${DMG_DIR}"
+mkdir -p "${DMG_DIR}"
+
+# Copy the .app bundle
+cp -R "${APP_BUNDLE}" "${DMG_DIR}/"
+
+# Add the standard Applications shortcut
+ln -s /Applications "${DMG_DIR}/Applications" || true
+
+# Optional README for DMG users
+cat > "${DMG_DIR}/README.txt" <<EOF
+pydns – 2D DNS simulation viewer
+
+Installation:
+  1. Drag pydns.app to the /Applications folder
+  2. Start the app normally from Applications
+
+Built using:
+  - PyQt6 GUI
+  - Fortran DNS core (f2py)
+EOF
+
+# ----------------------------------------------------------
+# 2. Remove old DMG
+# ----------------------------------------------------------
+rm -f "${DMG_NAME}"
+
+# ----------------------------------------------------------
+# 3. Create the DMG image
+#    - UDZO = compressed read-only disk image
+# ----------------------------------------------------------
+hdiutil create \
+  -volname "${VOLNAME}" \
+  -srcfolder "${DMG_DIR}" \
+  -ov \
+  -format UDZO \
+  "${DMG_NAME}"
+
+echo "==> DMG created successfully:"
+echo "    ${DMG_NAME}"
