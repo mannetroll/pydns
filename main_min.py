@@ -38,7 +38,7 @@ class SimulationWorker(QObject):
     Runs the DNS simulation in its own thread, emitting frames as they are ready.
     """
 
-    frame_ready = pyqtSignal(np.ndarray, float, int)  # pixels, time, iteration
+    frame_ready = pyqtSignal(float, int)  # time, iteration
     finished = pyqtSignal()
 
     def __init__(self, simulator: FortranDnsSimulator, parent=None) -> None:
@@ -68,11 +68,10 @@ class SimulationWorker(QObject):
                 continue
 
             self.sim.step()
-            pixels = self.sim.get_frame_pixels()
             t = self.sim.get_time()
             it = self.sim.get_iteration()
 
-            self.frame_ready.emit(pixels, t, it)
+            self.frame_ready.emit(t, it)
 
             now = time.time()
             dt = now - last_ts
@@ -113,9 +112,7 @@ class MainWindow(QMainWindow):
         self._status_update_counter = 0
 
         self.variable_combo = QComboBox()
-        self.variable_combo.addItems(
-            ["U", "V", "K", "Ω", "φ"]
-        )
+        self.variable_combo.addItems(["U", "V", "K", "Ω", "φ"])
 
         # Layout
         button_row = QHBoxLayout()
@@ -161,10 +158,11 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("2D Turbulent DNS (PyQt6)")
         self.resize(self.sim.px + 40, self.sim.py + 120)
 
-        # Initial frame
-        self._last_pixels: Optional[np.ndarray] = None
-        self._last_frame_time: Optional[float] = None
-        self._sim_start_time: Optional[float] = None
+        self._last_pixels = None
+        self._last_frame_time = None
+        self._sim_start_time = None
+
+        # initial draw
         self._update_image(self.sim.get_frame_pixels())
 
         # Start in OMEGA mode (index 3)
@@ -188,7 +186,8 @@ class MainWindow(QMainWindow):
 
     def on_step_clicked(self) -> None:
         self.sim.step()
-        self._update_image(self.sim.get_frame_pixels())
+        pixels = self.sim.get_frame_pixels()
+        self._update_image(pixels)
         t = self.sim.get_time()
         it = self.sim.get_iteration()
         self._update_status(t, it, fps=None)
@@ -196,9 +195,8 @@ class MainWindow(QMainWindow):
     def on_reset_clicked(self) -> None:
         self.worker.stop()
         self.sim.reset_field()
-        self._last_frame_time = None
         self._update_image(self.sim.get_frame_pixels())
-        self._update_status(self.sim.get_time(), self.sim.get_iteration(), fps=None)
+        self._update_status(self.sim.get_time(), self.sim.get_iteration(), None)
         self._sim_start_time = time.time()
         self.worker.start()  # auto-restart after reset
 
@@ -207,11 +205,10 @@ class MainWindow(QMainWindow):
             self, "Save frame", "frame.png",
             "PNG images (*.png);;All files (*)"
         )
-        if not path:
-            return
-        pixmap = self.image_label.pixmap()
-        if pixmap is not None:
-            pixmap.save(path, "PNG")
+        if path:
+            pm = self.image_label.pixmap()
+            if pm:
+                pm.save(path, "PNG")
 
     def on_variable_changed(self, index: int) -> None:
         mapping = {
@@ -233,59 +230,38 @@ class MainWindow(QMainWindow):
 
     # ---- worker callbacks -------------------------------------------
 
-    def on_frame_ready(self, pixels: np.ndarray, t: float, it: int) -> None:
-        fps: Optional[float] = None
-
-        # FPS based on real elapsed wall-clock time since simulation start
-        if self._sim_start_time is not None:
+    def on_frame_ready(self, t: float, it: int) -> None:
+        fps = None
+        if self._sim_start_time:
             elapsed = time.time() - self._sim_start_time
-            if elapsed > 0.0:
+            if elapsed > 0:
                 fps = it / elapsed
 
-
-        # Update status every 10th frame
         self._status_update_counter += 1
         if self._status_update_counter >= 10:
+            pixels = self.sim.get_frame_pixels()
             self._update_image(pixels)
             self._status_update_counter = 0
             self._update_status(t, it, fps)
 
-    # ---- helpers ----------------------------------------------------
-
     def _update_image(self, pixels: np.ndarray) -> None:
-        """Render already-packed 8-bit grayscale into the QLabel."""
         h, w = pixels.shape
-
-        qimg = QImage(
-            pixels.data,
-            w,
-            h,
-            w,  # bytes per line
-            QImage.Format.Format_Grayscale8,
-        )
-
+        qimg = QImage(pixels.data, w, h, w, QImage.Format.Format_Grayscale8)
         self._last_pixels = pixels
-        pixmap = QPixmap.fromImage(qimg)
-        self.image_label.setPixmap(pixmap)
+        self.image_label.setPixmap(QPixmap.fromImage(qimg))
 
+    def _update_status(self, t: float, it: int, fps: Optional[float]):
+        fps_str = f"{fps:4.0f}" if fps is not None else " n/a"
+        txt = f"FPS: {fps_str} | Iter: {it:4d} | T: {t:4.2f}"
+        self.status.showMessage(txt)
 
-    def _update_status(self, t: float, it: int, fps: Optional[float]) -> None:
-        # Monospaced + fixed width → no text jumping
-        fps_str = f"{fps:4.0f}" if fps is not None else "     n/a"
-        it_str = f"{it:4d}"
-        t_str = f"{t:4.2f}"
-
-        text = f"FPS: {fps_str} | Iter: {it_str} | T: {t_str}"
-        self.status.showMessage(text)
-
-    def _position_window(self) -> None:
+    def _position_window(self):
         screen = self.screen() or QApplication.primaryScreen()
-        if not screen:
-            return
-        geo = screen.availableGeometry()
-        frame = self.frameGeometry()
-        frame.moveCenter(geo.center())
-        self.move(frame.topLeft())
+        if screen:
+            g = screen.availableGeometry()
+            fr = self.frameGeometry()
+            fr.moveCenter(g.center())
+            self.move(fr.topLeft())
 
 
 def main() -> None:
