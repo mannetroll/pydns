@@ -52,9 +52,12 @@ dns_fortran.cpython-313-darwin.so
 
 ## ▶ Run the DNS Viewer
 
+![DNS Viewer Window](window.png)
+
 ```bash
 uv run python main_min.py
 ```
+
 
 ---
 
