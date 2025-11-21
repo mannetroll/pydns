@@ -72,7 +72,7 @@ class SimulationWorker(QObject):
             t = self.sim.get_time()
             it = self.sim.get_iteration()
 
-            self.frame_ready.emit(pixels.copy(), t, it)
+            self.frame_ready.emit(pixels, t, it)
 
             now = time.time()
             dt = now - last_ts
@@ -242,39 +242,29 @@ class MainWindow(QMainWindow):
             if elapsed > 0.0:
                 fps = it / elapsed
 
-        self._update_image(pixels)
 
         # Update status every 10th frame
         self._status_update_counter += 1
         if self._status_update_counter >= 10:
+            self._update_image(pixels)
             self._status_update_counter = 0
             self._update_status(t, it, fps)
 
     # ---- helpers ----------------------------------------------------
 
     def _update_image(self, pixels: np.ndarray) -> None:
-        """Render packed 32-bit grayscale from Fortran FIELD2PIX into the QLabel."""
-        if pixels.ndim != 2:
-            raise ValueError(f"Expected 2D array, got {pixels.shape}")
-
-        # FIELD2PIX packs the gray level L (0–255) into all three bytes:
-        # PIXEL = L * (1 + 256 + 65536) = 0x00LLLLLL
-        # We only need the low byte for an 8-bit QImage.
-        if pixels.dtype != np.uint8:
-            pixels = (pixels & 0xFF).astype(np.uint8, copy=False)
-
+        """Render already-packed 8-bit grayscale into the QLabel."""
         h, w = pixels.shape
-        pixels_c = np.ascontiguousarray(pixels)
 
         qimg = QImage(
-            pixels_c.data,
+            pixels.data,
             w,
             h,
             w,  # bytes per line
             QImage.Format.Format_Grayscale8,
         )
 
-        self._last_pixels = pixels_c
+        self._last_pixels = pixels
         pixmap = QPixmap.fromImage(qimg)
         self.image_label.setPixmap(pixmap)
 

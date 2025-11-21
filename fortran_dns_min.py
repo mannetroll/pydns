@@ -130,8 +130,16 @@ class FortranDnsSimulator:
 
     # ------------------------------------------------------------------
     def get_frame_pixels(self) -> np.ndarray:
-        """Used by the Qt app worker thread."""
-        return self.make_pixels_component(self.current_var)
+        """Used by the Qt app worker thread.
+
+        FIELD2PIX / dns_frame currently return 32-bit packed gray pixels
+        (0x00LLLLLL). Here we reduce that once to an 8-bit contiguous
+        array so the GUI can push it straight into a QImage.
+        """
+        plane = self.make_pixels_component(self.current_var)
+        pixels32 = np.asarray(plane, dtype=np.uint32)
+        pixels8 = (pixels32 & 0xFF).astype(np.uint8)
+        return np.ascontiguousarray(pixels8)
 
     def set_variable(self, var: int) -> None:
         """Select which variable the GUI should visualize."""
