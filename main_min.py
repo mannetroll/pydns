@@ -75,8 +75,8 @@ class SimulationWorker(QObject):
 
             now = time.time()
             dt = now - last_ts
-            if dt < 0.01:
-                time.sleep(0.01 - dt)
+            if dt < 0.005:
+                time.sleep(0.005 - dt)
             last_ts = now
 
         self.finished.emit()
@@ -253,6 +253,7 @@ class MainWindow(QMainWindow):
     def _update_status(self, t: float, it: int, fps: Optional[float]):
         fps_str = f"{fps:4.0f}" if fps is not None else " n/a"
         txt = f"FPS: {fps_str} | Iter: {it:4d} | T: {t:4.2f}"
+        #print(txt)
         self.status.showMessage(txt)
 
     def _position_window(self):
