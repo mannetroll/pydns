@@ -1,23 +1,26 @@
 import sys
 import time
-from time import sleep
+import os
 from typing import Optional
 import numpy as np
 
-import numpy as np
+os.environ["OMP_NUM_THREADS"] = "4"
+os.environ["OMP_DISPLAY_ENV"] = "TRUE"
+
 from PyQt6.QtCore import (
     Qt,
     QThread,
     pyqtSignal,
     QObject,
-    QTimer,
     QSize,
 )
 from PyQt6.QtGui import (
     QImage,
     QPixmap,
     QFontDatabase,
-    QIcon, QGuiApplication,
+    QIcon,
+    QPainter,
+    QFont,
 )
 from PyQt6.QtWidgets import (
     QApplication,
@@ -34,6 +37,20 @@ from PyQt6.QtWidgets import (
 
 from fortran_dns_min import FortranDnsSimulator
 from color_maps import COLOR_MAPS, DEFAULT_CMAP_NAME
+
+
+def resource_path(name: str) -> str:
+    """
+    Resolve the resource path both in dev (source) and in PyInstaller .app/.exe.
+
+    banner.png should sit in the project root (same folder as main_min.py)
+    when running from source and be collected by PyInstaller when frozen.
+    """
+    if hasattr(sys, "_MEIPASS"):
+        # PyInstaller temporary folder
+        return os.path.join(sys._MEIPASS, name)
+    # Normal Python run: relative to this file
+    return os.path.join(os.path.dirname(__file__), name)
 
 
 class SimulationWorker(QObject):
@@ -88,7 +105,7 @@ class SimulationWorker(QObject):
 
             now = time.time()
             dt = now - last_ts
-            threashold = 0.003
+            threashold = 0.004
             if dt < threashold:
                 time.sleep(threashold - dt)
             last_ts = now
@@ -157,9 +174,14 @@ class MainWindow(QMainWindow):
         self.status = QStatusBar()
         self.setStatusBar(self.status)
 
-        # --- NEW: force monospaced font for non-jumping text ---
+        # --- monospaced font for non-jumping text ---
         mono = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
         self.status.setFont(mono)
+
+        # --- threads-used indicator ---
+        self.threads_label = QLabel(self)
+        self._update_threads_label()
+        self.status.addPermanentWidget(self.threads_label)
 
         # Thread + worker
         self.thread = QThread(self)
@@ -195,7 +217,7 @@ class MainWindow(QMainWindow):
         # Color Turbo mode (index 5)
         self.cmap_combo.setCurrentIndex(5)
 
-        # Start worker thread
+        # Start a worker thread
         self.thread.start()
         self.worker.start()  # auto-start simulation
 
@@ -203,6 +225,7 @@ class MainWindow(QMainWindow):
 
     def on_start_clicked(self) -> None:
         self._last_frame_time = None
+        self._update_threads_label()  # refresh in case env changed
         self.worker.start()
 
     def on_stop_clicked(self) -> None:
@@ -285,19 +308,26 @@ class MainWindow(QMainWindow):
                 3 * w,
                 QImage.Format.Format_RGB888,
             )
+
         self.image_label.setPixmap(QPixmap.fromImage(qimg))
 
     def _update_status(self, t: float, it: int, fps: Optional[float]):
         fps_str = f"{fps:4.0f}" if fps is not None else " n/a"
         txt = f"FPS: {fps_str} | Iter: {it:4d} | T: {t:4.2f}"
         self.status.showMessage(txt)
-        #print(txt)
 
-    def position_window(self):
-        screen = QGuiApplication.primaryScreen().availableGeometry()
-        frame = self.frameGeometry()
-        frame.moveCenter(screen.center())
-        self.move(frame.topLeft())
+    def _update_threads_label(self) -> None:
+        """Update the 'threads used' indicator in the status bar."""
+        env_threads = os.environ.get("OMP_NUM_THREADS")
+
+        if  env_threads:
+            text = f"Threads: {env_threads} (OMP_NUM_THREADS)"
+        else:
+            cpu = os.cpu_count() or 1
+            text = f"Threads: {cpu} (OpenMP default)"
+
+        self.threads_label.setText("")
+        #self.threads_label.setText(text)
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -321,19 +351,78 @@ class MainWindow(QMainWindow):
         super().keyPressEvent(event)
 
 
+def _create_banner_pixmap() -> QPixmap:
+    """
+    Try to load banner.png, otherwise create a simple text banner so
+    the splash is always visible.
+    """
+    banner_path = resource_path("banner.png")
+
+    pix = QPixmap()
+    if os.path.exists(banner_path):
+        pix = QPixmap(banner_path)
+
+    if not pix.isNull():
+        return pix
+
+    # Fallback: white banner with text
+    pix = QPixmap(900, 500)
+    pix.fill(Qt.GlobalColor.white)
+
+    painter = QPainter(pix)
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+
+    title_font = QFont()
+    title_font.setPointSize(40)
+    title_font.setBold(True)
+
+    subtitle_font = QFont()
+    subtitle_font.setPointSize(22)
+
+    company_font = QFont()
+    company_font.setPointSize(18)
+
+    painter.setFont(title_font)
+    painter.drawText(pix.rect(), Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter,
+                     "pydns")
+
+    painter.setFont(subtitle_font)
+    painter.drawText(pix.rect().adjusted(0, 60, 0, 0),
+                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
+                     "loading...")
+
+    painter.setFont(company_font)
+    painter.drawText(pix.rect().adjusted(0, 0, 0, -40),
+                     Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
+                     "Mannetroll Solutions AB")
+
+    painter.end()
+    return pix
+
+
 def main() -> None:
     app = QApplication(sys.argv)
+
+    # --- Splash/banner while DNS + GUI init happens ---
+    #pix = _create_banner_pixmap()
+    #splash = QSplashScreen(pix)
+    #splash.show()
+    #app.processEvents()  # make sure splash is drawn immediately
+
     window = MainWindow()
     window.adjustSize()          # force layout to compute size
-
     # center based on the calculated size
     screen = app.primaryScreen().availableGeometry()
     g = window.geometry()
     g.moveCenter(screen.center())
     window.setGeometry(g)
+    window.show()    # already centered when it appears
 
-    window.show()                # already centered when it appears
+    # Remove splash AFTER the window is visible and stable
+    #QTimer.singleShot(500, lambda: splash.finish(window))
+
     sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     main()

@@ -7,9 +7,7 @@
 #   - main_min.py          (entry point, imports fortran_dns_min)
 #   - fortran_dns_min.py   (Python wrapper around the Fortran DNS simulator)
 #   - dns_fortran.*.so     (f2py-built extension module)
-
-# If you have extra Fortran .dylib files that are loaded via ctypes or dlopen,
-# see the "OPTIONAL: extra binaries" section further down.
+#   - banner.png           (splash / loading banner)
 
 from PyInstaller.utils.hooks import collect_submodules
 
@@ -28,11 +26,17 @@ extra_binaries = [
     # ("path/to/libdns_fortran.dylib", ".", "BINARY"),
 ]
 
+# Data files to bundle into the .app.
+# "banner.png" is placed in the app root so resource_path("banner.png") works.
+extra_datas = [
+    ("banner.png", "."),
+]
+
 a = Analysis(
     ["main_min.py"],
     pathex=[],
     binaries=extra_binaries,
-    datas=[],
+    datas=extra_datas,
     hiddenimports=hidden_imports,
     hookspath=[],
     hooksconfig={},
