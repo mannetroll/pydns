@@ -105,9 +105,9 @@ class SimulationWorker(QObject):
 
             now = time.time()
             dt = now - last_ts
-            threashold = 0.004
-            if dt < threashold:
-                time.sleep(threashold - dt)
+            threshold = 0.004
+            if dt < threshold:
+                time.sleep(threshold - dt)
             last_ts = now
 
         self.finished.emit()
