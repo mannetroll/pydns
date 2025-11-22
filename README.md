@@ -26,7 +26,7 @@ brew install gcc
 ```bash
 git clone git@github.com:mannetroll/pydns.git
 cd pydns
-uv venv --python 3.13.5
+uv venv --python 3.11.6
 source .venv/bin/activate
 uv sync
 ```
