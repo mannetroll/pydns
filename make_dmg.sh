@@ -51,7 +51,8 @@ pydns – 2D DNS simulation viewer
 
 Installation:
   1. Drag pydns.app to the /Applications folder
-  2. Start the app normally from Applications
+  2. $ xattr -dr com.apple.quarantine /Applications/pydns.app
+  3. Start the app normally from Applications
 
 Built using:
   - PyQt6 GUI
