@@ -7,6 +7,11 @@ import numpy as np
 os.environ["OMP_NUM_THREADS"] = "4"
 os.environ["OMP_DISPLAY_ENV"] = "TRUE"
 
+from fortran_dns_min import FortranDnsSimulator
+# initialize Fortran + OpenMP NOW (safe point)
+_preload_sim = FortranDnsSimulator(n=64)
+del _preload_sim
+
 from PyQt6.QtCore import (
     Qt,
     QThread,
