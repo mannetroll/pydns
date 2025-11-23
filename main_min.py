@@ -5,8 +5,21 @@ print("Top in main_min.py:", t0)
 os.environ["OMP_NUM_THREADS"] = "4"
 os.environ["OMP_DISPLAY_ENV"] = "TRUE"
 
+# ----------------------------------------------------------------------
+# OpenMP environment
+os.environ.setdefault("OMP_NUM_THREADS", "4")
+os.environ.setdefault("OMP_DISPLAY_ENV", "TRUE")
+
+# Preload Fortran/OpenMP once at import time
+from fortran_dns_min import FortranDnsSimulator
+
+try:
+    _preload_sim = FortranDnsSimulator(n=64)
+    del _preload_sim
+except Exception as exc:
+    print("WARNING: preload FortranDnsSimulator failed:", repr(exc))
+
 import sys
-import os
 from typing import Optional
 
 import numpy as np
@@ -25,21 +38,7 @@ from PyQt6.QtWidgets import (
     QStatusBar,
 )
 
-from fortran_dns_min import FortranDnsSimulator
 from color_maps import COLOR_MAPS, DEFAULT_CMAP_NAME
-
-# ----------------------------------------------------------------------
-# OpenMP environment
-os.environ.setdefault("OMP_NUM_THREADS", "4")
-os.environ.setdefault("OMP_DISPLAY_ENV", "TRUE")
-
-# Preload Fortran/OpenMP once at import time
-try:
-    _preload_sim = FortranDnsSimulator(n=64)
-    del _preload_sim
-except Exception as exc:
-    print("WARNING: preload FortranDnsSimulator failed:", repr(exc))
-
 
 class MainWindow(QMainWindow):
     def __init__(self, sim: FortranDnsSimulator) -> None:
