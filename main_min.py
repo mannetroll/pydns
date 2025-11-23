@@ -2,13 +2,13 @@ import time
 import os
 t0 = time.time()
 print("Top in main_min.py:", t0)
-os.environ["OMP_NUM_THREADS"] = "4"
-os.environ["OMP_DISPLAY_ENV"] = "TRUE"
 
 # ----------------------------------------------------------------------
 # OpenMP environment
-os.environ.setdefault("OMP_NUM_THREADS", "4")
-os.environ.setdefault("OMP_DISPLAY_ENV", "TRUE")
+os.environ["OMP_NUM_THREADS"] = "4"
+os.environ["OMP_DISPLAY_ENV"] = "TRUE"
+#os.environ.setdefault("OMP_NUM_THREADS", "4")
+#os.environ.setdefault("OMP_DISPLAY_ENV", "TRUE")
 
 # Preload Fortran/OpenMP once at import time
 from fortran_dns_min import FortranDnsSimulator
