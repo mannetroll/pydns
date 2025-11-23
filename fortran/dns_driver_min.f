@@ -6,7 +6,7 @@ C***********************************************************************
       MODULE DNS_WORKSPACE
       IMPLICIT NONE
 C--- Global limits -----------------------------------------------------
-      INTEGER, PARAMETER :: NMAX = 512
+      INTEGER, PARAMETER :: NMAX = 1024
 
 C--- Global scalar state -----------------------------------------------
       INTEGER, SAVE :: N, N3D2, PX, PY, IT, IFN

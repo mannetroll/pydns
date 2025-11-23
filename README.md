@@ -40,7 +40,7 @@ If your solver file is `dns_fortran.f90`:
 
 ```bash
 cd fortran
-bash build_dns_fortran_min.sh
+bash build_dns_macos.sh
 ```
 
 This produces:

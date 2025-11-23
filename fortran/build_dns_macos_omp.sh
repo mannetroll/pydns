@@ -46,4 +46,5 @@ python -m numpy.f2py -c \
   pao.o visasub3d.o dns_driver_min3d.o vfft.o \
   -lgomp
 
-echo "Done. Import with:  import dns_fortran"
+python -c "import dns_fortran; dns_fortran.run_dns(1000.0, 10.0)"
+echo "Done!"

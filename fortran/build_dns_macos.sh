@@ -13,3 +13,6 @@ export FFLAGS="-Ofast -mcpu=native -funroll-loops -std=legacy \
 rm -f dns_fortran.cpython-313-darwin.so
 
 python -m numpy.f2py -c dns_fortran_min.pyf pao.f vfft.f visasub.f dns_driver_min.f
+
+python -c "import dns_fortran; dns_fortran.run_dns(1000.0, 10.0)"
+echo "Done!"
