@@ -2,34 +2,44 @@
 
 set -euo pipefail
 
-export FC=gfortran
+# Fortran compiler
+export FC=${FC:-gfortran}
 
 # Common flags for old F77 / fixed-form
+# NOTE: -fPIC is critical for building a shared library on Linux
 COMMON="-std=legacy -ffixed-line-length-none -Wno-tabs \
-  -fallow-argument-mismatch -w"
+  -fallow-argument-mismatch -w -fPIC"
 
 # DNS / driver code: legacy semantics (SAVE-like locals)
 DNS_FLAGS="$COMMON -fno-automatic -finit-local-zero \
-  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
+  -Ofast -mcpu=native -funroll-loops -fopenmp"
 
 # FFT library: needs automatic locals for thread safety
 VFFT_FLAGS="$COMMON -frecursive \
-  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
+  -Ofast -mcpu=native -funroll-loops -fopenmp"
+
+# C compilers for NumPy/distutils (avoid weird cross defaults)
+export CC=${CC:-gcc}
+export CXX=${CXX:-g++}
 
 # Find where libgomp lives and link to it explicitly
-LIBGOMP_PATH=$(gfortran -print-file-name=libgomp.dylib)
-LIBGOMP_DIR=$(dirname "$LIBGOMP_PATH")
+LIBGOMP_PATH="$($FC -print-file-name=libgomp.so)"
+LIBGOMP_DIR="$(dirname "$LIBGOMP_PATH")"
 
-# Link against libgomp, and add rpath so macOS can find it at runtime
+# Link against libgomp, and add rpath so the loader can find it at runtime
 export LDFLAGS="-L${LIBGOMP_DIR} -lgomp -Wl,-rpath,${LIBGOMP_DIR}"
 
 # Tell NumPy to append (not overwrite) flags
 export NPY_DISTUTILS_APPEND_FLAGS=1
 
-# Runtime OpenMP threads
-export OMP_NUM_THREADS=4
-export OMP_DISPLAY_ENV=TRUE
+# Runtime OpenMP threads (you can override before calling the script)
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-4}
 
+echo "Using Fortran compiler: $FC"
+echo "Using C compiler:       $CC"
+echo "libgomp path:           $LIBGOMP_PATH"
+
+# Clean previous build artifacts
 rm -f dns_fortran*.so *.o
 
 echo "Compiling Fortran objects with OpenMP..."
@@ -47,5 +57,10 @@ python -m numpy.f2py -c \
   pao.o visasub3d.o dns_driver_min3d.o vfft.o \
   -lgomp
 
+# Runtime OpenMP threads
+export OMP_NUM_THREADS=4
+export OMP_DISPLAY_ENV=TRUE
+
+echo "Running quick sanity check..."
 python -c "import dns_fortran; dns_fortran.run_dns(1000.0, 10.0)"
 echo "Done!"
