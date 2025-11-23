@@ -26,9 +26,9 @@ brew install gcc
 ```bash
 git clone git@github.com:mannetroll/pydns.git
 cd pydns
-uv python install 3.11.6
-uv python pin 3.11.6
-uv venv --python 3.11.6
+uv python install 3.13.9
+uv python pin 3.13.9
+uv venv --python 3.13.9
 source .venv/bin/activate
 uv sync
 ```
@@ -47,7 +47,7 @@ bash build_dns_macos.sh
 This produces:
 
 ```
-dns_fortran.cpython-311-darwin.so
+dns_fortran.cpython-313-darwin.so
 ```
 
 ---
