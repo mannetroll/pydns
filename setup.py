@@ -164,6 +164,7 @@ class F2PyBuildExt(build_ext):
             str(driver_f),
             f"-L{src_dir}",
             "-lvfft",
+            "-lgomp",
         ]
 
         print("== Running f2py command ==")
