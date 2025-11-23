@@ -75,5 +75,6 @@ hdiutil create \
   -format UDZO \
   "${DMG_NAME}"
 
+rm -rf dmg_root
 echo "==> DMG created successfully:"
 echo "    ${DMG_NAME}"
