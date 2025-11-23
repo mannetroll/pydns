@@ -14,7 +14,7 @@ os.environ.setdefault("OMP_DISPLAY_ENV", "TRUE")
 from fortran_dns_min import FortranDnsSimulator
 
 try:
-    _preload_sim = FortranDnsSimulator(n=64)
+    _preload_sim = FortranDnsSimulator()
     del _preload_sim
 except Exception as exc:
     print("WARNING: preload FortranDnsSimulator failed:", repr(exc))
