@@ -60,8 +60,19 @@ dns_fortran.cpython-313-darwin.so
 uv run python main_min.py
 ```
 
-
 ---
+
+Build Wheel:
+
+```bash
+uv build
+```
+
+Produces:
+
+```
+dist/pydns-0.1.1-cp313-cp313-macosx_15_0_arm64.whl
+```
 
 ## 🖥 Build a macOS `.app`
 
