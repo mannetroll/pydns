@@ -44,8 +44,7 @@ build/
 # ----------------------------
 .DS_Store
 Thumbs.db
-/fortran/showapp
-/fortran/dnsapp
 *.png
-/fortran/dns_workspace.mod
-/dmg_root/
+fortran/dns_workspace.mod
+dmg_root/
+fortran/dns_fortran.cpython-311-darwin.so.dSYM/

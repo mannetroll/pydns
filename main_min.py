@@ -213,8 +213,8 @@ class MainWindow(QMainWindow):
         # Count frames since last GUI update
         self._status_update_counter += 1
 
-        # Update GUI only every 10 frames
-        UPDATE_INTERVAL = 10
+        # Update GUI only every 20 frames
+        UPDATE_INTERVAL = 20
         if self._status_update_counter >= UPDATE_INTERVAL:
             pixels = self.sim.get_frame_pixels()
             self._update_image(pixels)
