@@ -2,50 +2,87 @@
 
 set -euo pipefail
 
-export FC=gfortran
+# Python interpreter (your 3.13 venv)
+PYTHON=${PYTHON:-python3.13}
 
+# Compilers
+export FC=${FC:-/opt/homebrew/bin/gfortran}
+export CC=${CC:-clang}
+export CXX=${CXX:-clang++}
+
+# Source dir (where this script and libvfft.a live)
+SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# -----------------------------
+#  Fortran flags
+# -----------------------------
 # Common flags for old F77 / fixed-form
 COMMON="-std=legacy -ffixed-line-length-none -Wno-tabs \
-  -fallow-argument-mismatch -w"
+  -fallow-argument-mismatch -w -fPIC"
 
-# DNS / driver code: legacy semantics (SAVE-like locals)
-DNS_FLAGS="$COMMON -fno-automatic -finit-local-zero \
-  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
+# DNS / driver code: legacy semantics + OpenMP
+DNS_FFLAGS="$COMMON -frecursive -fno-automatic -finit-local-zero \
+  -Ofast -mcpu=native -funroll-loops -fopenmp"
 
-# FFT library: needs automatic locals for thread safety
-VFFT_FLAGS="$COMMON -frecursive \
-  -Ofast -mcpu=native -funroll-loops -flto -fopenmp"
+# FFT library: NO OpenMP (thread-unsafe), still recursive + optimized
+VFFT_FFLAGS="$COMMON -frecursive \
+  -Ofast -mcpu=native -funroll-loops"
 
-# Find where libgomp lives and link to it explicitly
-LIBGOMP_PATH=$(gfortran -print-file-name=libgomp.dylib)
-LIBGOMP_DIR=$(dirname "$LIBGOMP_PATH")
+# Tell f2py/meson to use DNS_FFLAGS for all Fortran it compiles itself
+export FFLAGS="$DNS_FFLAGS"
 
-# Link against libgomp, and add rpath so macOS can find it at runtime
+# -----------------------------
+#  OpenMP runtime (libgomp)
+# -----------------------------
+LIBGOMP_PATH="$($FC -print-file-name=libgomp.dylib)"
+LIBGOMP_DIR="$(dirname "$LIBGOMP_PATH")"
+
+# Only libgomp in LDFLAGS (this combo has worked before)
 export LDFLAGS="-L${LIBGOMP_DIR} -lgomp -Wl,-rpath,${LIBGOMP_DIR}"
 
-# Tell NumPy to append (not overwrite) flags
-export NPY_DISTUTILS_APPEND_FLAGS=1
+# Runtime OpenMP knobs
+export OMP_NUM_THREADS=${OMP_NUM_THREADS:-4}
+export OMP_DISPLAY_ENV=${OMP_DISPLAY_ENV:-TRUE}
 
-# Runtime OpenMP threads
-export OMP_NUM_THREADS=4
-export OMP_DISPLAY_ENV=TRUE
+echo "Using Python:           $PYTHON"
+echo "Using Fortran compiler: $FC ($(command -v "$FC"))"
+echo "Using C compiler:       $CC ($(command -v "$CC"))"
+echo "Using C++ compiler:     $CXX ($(command -v "$CXX"))"
+echo "SRC_DIR:                $SRC_DIR"
+echo "FFLAGS (DNS):           $FFLAGS"
+echo "VFFT_FFLAGS:            $VFFT_FFLAGS"
+echo "LDFLAGS:                $LDFLAGS"
+echo "libgomp path:           $LIBGOMP_PATH"
 
-rm -f dns_fortran*.so *.o
+# -----------------------------
+#  Clean old build artefacts
+# -----------------------------
+rm -f "$SRC_DIR"/dns_fortran*.so "$SRC_DIR"/vfft.o "$SRC_DIR"/libvfft.a
 
-echo "Compiling Fortran objects with OpenMP..."
+# -----------------------------
+#  Compile vfft.f WITHOUT OpenMP and archive into libvfft.a
+# -----------------------------
+echo "Compiling vfft.f (NO OpenMP)..."
+"$FC" $VFFT_FFLAGS -c "$SRC_DIR"/vfft.f -o "$SRC_DIR"/vfft.o
 
-# vfft: compiled separately, re-entrant
-$FC $VFFT_FLAGS -c vfft.f
+echo "Creating static library libvfft.a..."
+ar rcs "$SRC_DIR"/libvfft.a "$SRC_DIR"/vfft.o
 
-# DNS core + driver: with -fno-automatic
-$FC $DNS_FLAGS  -c pao.f visasub3d.f dns_driver_min3d.f
+# -----------------------------
+#  Build dns_fortran via f2py/meson
+#  - f2py compiles pao/visasub3d/dns_driver_min3d with OpenMP (FFLAGS)
+#  - vfft code is pulled in from libvfft.a via -L<SRC_DIR> -lvfft
+# -----------------------------
+echo "Building f2py module dns_fortran (DNS with OpenMP, vfft serial)..."
 
-echo "Building f2py module dns_fortran (with OpenMP)..."
+"$PYTHON" -m numpy.f2py -c \
+  "$SRC_DIR"/dns_fortran_min.pyf \
+  "$SRC_DIR"/pao.f "$SRC_DIR"/visasub3d.f "$SRC_DIR"/dns_driver_min3d.f \
+  -L"$SRC_DIR" -lvfft
 
-python -m numpy.f2py -c \
-  dns_fortran_min.pyf \
-  pao.o visasub3d.o dns_driver_min3d.o vfft.o \
-  -lgomp
-
-python -c "import dns_fortran; dns_fortran.run_dns(1000.0, 10.0)"
+# -----------------------------
+#  Quick sanity check
+# -----------------------------
+echo "Running quick sanity check..."
+"$PYTHON" -c "import dns_fortran; dns_fortran.run_dns(1000.0, 10.0)"
 echo "Done!"
