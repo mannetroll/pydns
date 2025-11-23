@@ -48,3 +48,4 @@ Thumbs.db
 fortran/dns_workspace.mod
 dmg_root/
 fortran/dns_fortran.cpython-311-darwin.so.dSYM/
+/fortran/libvfft.a
