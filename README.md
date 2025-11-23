@@ -35,7 +35,7 @@ uv sync
 
 ---
 
-## 🔧 Build the Fortran extension
+## 🔧 Build the Fortran extension without OpenMP
 
 If your solver file is `dns_driver_min.f`:
 
