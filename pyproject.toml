@@ -1,8 +1,28 @@
+[build-system]
+requires = [
+  "setuptools>=69",
+  "wheel",
+  "numpy>=2.0",
+  "meson>=1.4.0",
+  "ninja>=1.11.0",
+]
+build-backend = "setuptools.build_meta"
+
+# Python modules exposed by your project
+[tool.setuptools]
+py-modules = ["fortran_dns_min", "main_min", "color_maps"]
+packages = ["fortran"]
+
 [project]
 name = "pydns"
-version = "0.1.0"
-description = "DNS ~ Direct Numerical Simulation"
-requires-python = ">=3.11,<3.12"
+version = "0.1.1"
+description = "2D turbulent DNS solver with Fortran/OpenMP backend and PyQt6 GUI"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+  { name = "Torbjörn Sjögren" }
+]
+
 
 dependencies = [
     "matplotlib",
