@@ -17,16 +17,15 @@ class F2PyBuildExt(build_ext):
       - vfft.f compiled *without* OpenMP into libvfft.a
       - DNS core (pao.f, visasub3d.f, dns_driver_min3d.f) built by
         `numpy.f2py` with OpenMP via FFLAGS
-      - libgomp located from the Fortran compiler (Homebrew gfortran)
-      - meson backend (NumPy 2.x on Python 3.13) under the hood
+      - libgomp located from the Fortran compiler
+      - meson backend (NumPy 2.x on Python 3.12+) under the hood
 
     Result: a ready-to-import extension `fortran.dns_fortran` that matches
-    the behavior of build_dns_macos_omp_313.sh.
+    the behavior of the external build script.
     """
 
     def build_extension(self, ext):
-        # We only special-case this one extension; everything else uses the
-        # normal setuptools build_ext behavior.
+        # Only special-case this one extension
         if ext.name != "fortran.dns_fortran":
             return super().build_extension(ext)
 
@@ -34,19 +33,32 @@ class F2PyBuildExt(build_ext):
         src_dir = root / "fortran"
         src_dir.mkdir(exist_ok=True)
 
-        # Python used by the build backend (uv's isolated env)
         py_exe = sys.executable
-
         env = os.environ.copy()
 
-        # Compilers
-        fc = env.get("FC", "/opt/homebrew/bin/gfortran")
+        # -----------------------------
+        #  Platform-specific defaults
+        # -----------------------------
+        if sys.platform == "darwin":
+            default_fc = "/opt/homebrew/bin/gfortran"
+            default_cc = "clang"
+            default_cxx = "clang++"
+            libgomp_name = "libgomp.dylib"
+        else:
+            # Linux / Fedora etc.
+            default_fc = "gfortran"
+            default_cc = "gcc"
+            default_cxx = "g++"
+            libgomp_name = "libgomp.so"
+
+        # Compilers (env overrides defaults)
+        fc = env.get("FC", default_fc)
         env["FC"] = fc
-        env.setdefault("CC", "clang")
-        env.setdefault("CXX", "clang++")
+        env.setdefault("CC", default_cc)
+        env.setdefault("CXX", default_cxx)
 
         # -----------------------------
-        #  Fortran flags (same as script)
+        #  Fortran flags (same idea as scripts)
         # -----------------------------
         common = (
             "-std=legacy -ffixed-line-length-none -Wno-tabs "
@@ -72,34 +84,40 @@ class F2PyBuildExt(build_ext):
         # -----------------------------
         #  OpenMP runtime (libgomp)
         # -----------------------------
+        ldflags = env.get("LDFLAGS", "")
         try:
             libgomp_path = subprocess.check_output(
-                [fc, "-print-file-name=libgomp.dylib"],
+                [fc, "-print-file-name", libgomp_name],
                 text=True,
             ).strip()
         except Exception:
             libgomp_path = ""
 
-        ldflags = env.get("LDFLAGS", "")
-        if libgomp_path:
+        if libgomp_path and libgomp_path != libgomp_name:
             libgomp_dir = str(Path(libgomp_path).parent)
             extra_ld = f"-L{libgomp_dir} -lgomp -Wl,-rpath,{libgomp_dir}"
             ldflags = (ldflags + " " + extra_ld).strip()
+        else:
+            # If we can't locate libgomp, just continue without tweaking LDFLAGS.
+            # This still lets you run without OpenMP if needed.
+            pass
+
         env["LDFLAGS"] = ldflags
 
         env.setdefault("OMP_NUM_THREADS", "4")
         env.setdefault("OMP_DISPLAY_ENV", "TRUE")
 
         print("== F2PY build env ==")
-        print("  FC      =", env["FC"])
-        print("  CC      =", env["CC"])
-        print("  CXX     =", env["CXX"])
-        print("  FFLAGS  =", env.get("FFLAGS", ""))
-        print("  LDFLAGS =", env.get("LDFLAGS", ""))
-        print("  src_dir =", src_dir)
+        print("  sys.platform =", sys.platform)
+        print("  FC           =", env["FC"])
+        print("  CC           =", env["CC"])
+        print("  CXX          =", env["CXX"])
+        print("  FFLAGS       =", env.get("FFLAGS", ""))
+        print("  LDFLAGS      =", env.get("LDFLAGS", ""))
+        print("  src_dir      =", src_dir)
 
         # -----------------------------
-        #  Compile vfft.f WITHOUT OpenMP into libvfft.a in src_dir
+        #  Compile vfft.f WITHOUT OpenMP into libvfft.a
         # -----------------------------
         vfft_f = src_dir / "vfft.f"
         vfft_o = src_dir / "vfft_build.o"
@@ -170,7 +188,7 @@ class F2PyBuildExt(build_ext):
 # Dummy extension; all build logic is in F2PyBuildExt.build_extension
 ext_modules = [
     Extension(
-        name="fortran.dns_fortran",  # lives inside the 'fortran' package
+        name="fortran.dns_fortran",
         sources=[],  # f2py drives this, not setuptools
     )
 ]
