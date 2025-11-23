@@ -37,7 +37,7 @@ uv sync
 
 ## 🔧 Build the Fortran extension
 
-If your solver file is `dns_fortran.f90`:
+If your solver file is `dns_driver_min.f`:
 
 ```bash
 cd fortran
@@ -47,7 +47,7 @@ bash build_dns_macos.sh
 This produces:
 
 ```
-dns_fortran.cpython-313-darwin.so
+dns_fortran.cpython-311-darwin.so
 ```
 
 ---
