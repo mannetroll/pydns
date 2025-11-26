@@ -71,7 +71,7 @@ uv build
 Produces:
 
 ```
-dist/pydns-0.1.1-cp313-cp313-macosx_15_0_arm64.whl
+dist/pydns-0.1.2-cp313-cp313-macosx_15_0_arm64.whl
 ```
 
 ## 🖥 Build a macOS `.app`
