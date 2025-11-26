@@ -15,7 +15,7 @@ packages = ["fortran"]
 
 [project]
 name = "mannetroll-pydns"
-version = "0.1.1"
+version = "0.1.2"
 description = "2D turbulent DNS solver with Fortran/OpenMP backend and PyQt6 GUI"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.13,<3.14"
