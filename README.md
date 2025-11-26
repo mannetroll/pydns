@@ -92,4 +92,12 @@ dist/pydns.app
 
 Double-click to launch.
 
+## twine & pypi.org
+
+```
+uv add --dev build twine
+uv run python -m build
+uv run twine upload dist/*
+```
+
 ---
