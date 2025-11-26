@@ -104,6 +104,7 @@ uv run twine upload dist/*
 
 ```
 curl -LsSf https://astral.sh/uv/install.sh | sh
+uv cache clean mannetroll-pydns
 uv run --with mannetroll-pydns==0.1.2 python -m main_min
 ```
 
