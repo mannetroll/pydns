@@ -100,4 +100,11 @@ uv run python -m build
 uv run twine upload dist/*
 ```
 
+## one-liner
+
+```
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv run --with mannetroll-pydns==0.1.2 python -m main_min
+```
+
 ---
