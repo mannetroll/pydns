@@ -54,7 +54,7 @@ dns_fortran.cpython-313-darwin.so
 
 ## ▶ Run the DNS Viewer
 
-![DNS Viewer Window](window.png)
+![DNS Viewer Window](https://github.com/mannetroll/pydns/raw/main/window.png)
 
 ```bash
 uv run python main_min.py
