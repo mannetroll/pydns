@@ -12,7 +12,6 @@ FFLAGS_COMMON="-ffixed-line-length-none -Wno-tabs -finit-local-zero -fallow-argu
 FFLAGS="$FFLAGS_COMMON -Ofast -mcpu=native -fopenmp -frecursive"
 
 # vfft: compiled separately, re-entrant
-# vfft: compiled separately, re-entrant
 gfortran -std=legacy -ffixed-line-length-none -Wno-tabs -frecursive -Ofast -mcpu=native -c vfft.f
 
 # legacy code + driver
