@@ -1,0 +1,233 @@
+Running N=32 ...
+ --- INITIALIZING DNS3D ---
+ N=          32  (MAXN=        4096 )
+ After PAO: VISC=   3.34679685E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   15.0000000      Max(GAMMA)=   15.0000000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   4.02890921    
+ Max |UR| after STEP2A  =   3.02678108    
+ Initial DT=   1.15220547E-02  CN=   1.00000000    
+ Step          10  T=  0.114912815      DT=   1.14114368E-02  CN=  0.999758840    
+ Step          20  T=  0.231087193      DT=   1.20791867E-02  CN=   1.00644898    
+ Step          30  T=  0.352716595      DT=   1.22394571E-02  CN=   1.00228429    
+ Step          40  T=  0.476839811      DT=   1.24264518E-02  CN=  0.998716891    
+ Step          50  T=  0.604109049      DT=   1.29708806E-02  CN=  0.998895705    
+ Step          60  T=  0.738813281      DT=   1.45208845E-02  CN=   1.00925016    
+ Step          70  T=  0.887307167      DT=   1.50105432E-02  CN=  0.999677181    
+ Step          80  T=   1.03661370      DT=   1.45281544E-02  CN=  0.993033230    
+ Step          90  T=   1.18272913      DT=   1.48060145E-02  CN=  0.996113181    
+ Step         100  T=   1.32966650      DT=   1.50295468E-02  CN=   1.00779974    
+ Elapsed CPU time for 100 steps (s) =  0.103609994    
+ Frames per second (FPS)            =   965.157837    
+ Elapsed time (s):    4.60000001E-02
+ FPS:    2173.91309    
+ Pixels sample:    10724259           0
+ Final T=   1.32966650      CN=   1.00779974      DT=   1.50295468E-02  VISC=   3.34679685E-03
+ Final Max |UR|=   24.0026989    
+ Final Max |OM2|=  0.565046310    
+ Final Max |PIXARR|=    16777215
+Running N=64 ...
+ --- INITIALIZING DNS3D ---
+ N=          64  (MAXN=        4096 )
+ After PAO: VISC=   3.15245520E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   31.0000000      Max(GAMMA)=   31.0000000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   3.93818140    
+ Max |UR| after STEP2A  =   2.88220453    
+ Initial DT=   5.61451633E-03  CN=   1.00000000    
+ Step          10  T=   5.72472513E-02  DT=   5.91664901E-03  CN=   1.00504279    
+ Step          20  T=  0.117612384      DT=   6.20171474E-03  CN=   1.00559437    
+ Step          30  T=  0.180573449      DT=   6.37503108E-03  CN=   1.00161541    
+ Step          40  T=  0.244831100      DT=   6.53376617E-03  CN=   1.00460517    
+ Step          50  T=  0.311006278      DT=   6.68196054E-03  CN=   1.00124931    
+ Step          60  T=  0.378239810      DT=   6.79912604E-03  CN=   1.00306165    
+ Step          70  T=  0.446438074      DT=   6.81195315E-03  CN=   1.00029123    
+ Step          80  T=  0.514931202      DT=   6.86351443E-03  CN=  0.999579430    
+ Step          90  T=  0.583600104      DT=   6.90981746E-03  CN=   1.00231087    
+ Step         100  T=  0.653526664      DT=   7.08944583E-03  CN=   1.00295019    
+ Elapsed CPU time for 100 steps (s) =  0.105535999    
+ Frames per second (FPS)            =   947.543945    
+ Elapsed time (s):    5.09999990E-02
+ FPS:    1960.78430    
+ Pixels sample:    10197915           0
+ Final T=  0.653526664      CN=   1.00295019      DT=   7.08944583E-03  VISC=   3.15245520E-03
+ Final Max |UR|=   26.7370033    
+ Final Max |OM2|=  0.717303455    
+ Final Max |PIXARR|=    16777215
+Running N=128 ...
+ --- INITIALIZING DNS3D ---
+ N=         128  (MAXN=        4096 )
+ After PAO: VISC=   3.15221003E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   63.0000000      Max(GAMMA)=   63.0000000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   3.46219015    
+ Max |UR| after STEP2A  =   2.50994372    
+ Initial DT=   3.23026418E-03  CN=   1.00000000    
+ Step          10  T=   3.25965025E-02  DT=   3.29300296E-03  CN=   1.00026083    
+ Step          20  T=   6.53401017E-02  DT=   3.23865935E-03  CN=  0.997688770    
+ Step          30  T=   9.74934101E-02  DT=   3.19487671E-03  CN=  0.999007821    
+ Step          40  T=  0.129391089      DT=   3.19525506E-03  CN=   1.00115609    
+ Step          50  T=  0.161502242      DT=   3.23741836E-03  CN=   1.00216651    
+ Step          60  T=  0.194283813      DT=   3.32526024E-03  CN=   1.00270700    
+ Step          70  T=  0.228091866      DT=   3.44659109E-03  CN=   1.00329971    
+ Step          80  T=  0.263087422      DT=   3.54207493E-03  CN=   1.00077379    
+ Step          90  T=  0.298415482      DT=   3.51015013E-03  CN=  0.998758554    
+ Step         100  T=  0.333393127      DT=   3.48601933E-03  CN=  0.999425948    
+ Elapsed CPU time for 100 steps (s) =  0.145190001    
+ Frames per second (FPS)            =   688.752686    
+ Elapsed time (s):    6.80000037E-02
+ FPS:    1470.58813    
+ Pixels sample:     3684408           0
+ Final T=  0.333393127      CN=  0.999425948      DT=   3.48601933E-03  VISC=   3.15221003E-03
+ Final Max |UR|=   30.5985622    
+ Final Max |OM2|=  0.661090672    
+ Final Max |PIXARR|=    16777215
+Running N=256 ...
+ --- INITIALIZING DNS3D ---
+ N=         256  (MAXN=        4096 )
+ After PAO: VISC=   3.15221003E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   127.000000      Max(GAMMA)=   127.000000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   4.34248114    
+ Max |UR| after STEP2A  =   3.07319427    
+ Initial DT=   1.66246609E-03  CN=   1.00000000    
+ Step          10  T=   1.65761393E-02  DT=   1.64890382E-03  CN=  0.998912871    
+ Step          20  T=   3.29756811E-02  DT=   1.62925653E-03  CN=  0.998825490    
+ Step          30  T=   4.91883643E-02  DT=   1.61238923E-03  CN=  0.999067008    
+ Step          40  T=   6.52581006E-02  DT=   1.60145084E-03  CN=  0.999522269    
+ Step          50  T=   8.12419653E-02  DT=   1.59565848E-03  CN=  0.999750853    
+ Step          60  T=   9.71937701E-02  DT=   1.59535382E-03  CN=   1.00012457    
+ Step          70  T=  0.113158695      DT=   1.59850449E-03  CN=   1.00032449    
+ Step          80  T=  0.129165471      DT=   1.60387519E-03  CN=   1.00036216    
+ Step          90  T=  0.145238057      DT=   1.61164941E-03  CN=   1.00054109    
+ Step         100  T=  0.161396936      DT=   1.62127998E-03  CN=   1.00069606    
+ Elapsed CPU time for 100 steps (s) =  0.409762979    
+ Frames per second (FPS)            =   244.043518    
+ Elapsed time (s):   0.177000001    
+ FPS:    564.971741    
+ Pixels sample:     4868682           0
+ Final T=  0.161396936      CN=   1.00069606      DT=   1.62127998E-03  VISC=   3.15221003E-03
+ Final Max |UR|=   38.0857620    
+ Final Max |OM2|=  0.583955824    
+ Final Max |PIXARR|=    16777215
+Running N=512 ...
+ --- INITIALIZING DNS3D ---
+ N=         512  (MAXN=        4096 )
+ After PAO: VISC=   3.15220980E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   255.000000      Max(GAMMA)=   255.000000    
+ After CALCOM  Max |OM2|=  0.342198312    
+ Max |UC| before STEP2A =   4.52469826    
+ Max |UR| after STEP2A  =   3.20405006    
+ Initial DT=   6.62409351E-04  CN=   1.00000000    
+ Step          10  T=   6.63726032E-03  DT=   6.66079228E-04  CN=   1.00076532    
+ Step          20  T=   1.33229252E-02  DT=   6.71752379E-04  CN=   1.00089049    
+ Step          30  T=   2.00670827E-02  DT=   6.77594508E-04  CN=   1.00084245    
+ Step          40  T=   2.68686563E-02  DT=   6.83288847E-04  CN=   1.00083363    
+ Step          50  T=   3.37270424E-02  DT=   6.88901928E-04  CN=   1.00078285    
+ Step          60  T=   4.06394750E-02  DT=   6.94042072E-04  CN=   1.00072241    
+ Step          70  T=   4.76021282E-02  DT=   6.98950957E-04  CN=   1.00069201    
+ Step          80  T=   5.46131507E-02  DT=   7.03702855E-04  CN=   1.00066161    
+ Step          90  T=   6.16701543E-02  DT=   7.08084321E-04  CN=   1.00060368    
+ Step         100  T=   6.87701479E-02  DT=   7.12341454E-04  CN=   1.00059962    
+ Elapsed CPU time for 100 steps (s) =   1.74484193    
+ Frames per second (FPS)            =   57.3117828    
+ Elapsed time (s):   0.721000016    
+ FPS:    138.696259    
+ Pixels sample:     6447714     2171169
+ Final T=   6.87701479E-02  CN=   1.00059962      DT=   7.12341454E-04  VISC=   3.15220980E-03
+ Final Max |UR|=   42.9587326    
+ Final Max |OM2|=  0.482265800    
+ Final Max |PIXARR|=    16777215
+Running N=1024 ...
+ --- INITIALIZING DNS3D ---
+ N=        1024  (MAXN=        4096 )
+ After PAO: VISC=   3.15221003E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   511.000000      Max(GAMMA)=   511.000000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   3.77118850    
+ Max |UR| after STEP2A  =   2.66708136    
+ Initial DT=   3.58416903E-04  CN=   1.00000000    
+ Step          10  T=   3.58679774E-03  DT=   3.59140540E-04  CN=   1.00026906    
+ Step          20  T=   7.18306424E-03  DT=   3.60267964E-04  CN=   1.00033224    
+ Step          30  T=   1.07910782E-02  DT=   3.61475599E-04  CN=   1.00035477    
+ Step          40  T=   1.44117046E-02  DT=   3.62771156E-04  CN=   1.00035751    
+ Step          50  T=   1.80455390E-02  DT=   3.64144653E-04  CN=   1.00037408    
+ Step          60  T=   2.16932129E-02  DT=   3.65556654E-04  CN=   1.00040889    
+ Step          70  T=   2.53553800E-02  DT=   3.67018598E-04  CN=   1.00040388    
+ Step          80  T=   2.90324800E-02  DT=   3.68553738E-04  CN=   1.00041008    
+ Step          90  T=   3.27249691E-02  DT=   3.70127615E-04  CN=   1.00044727    
+ Step         100  T=   3.64334174E-02  DT=   3.71724338E-04  CN=   1.00043786    
+ Elapsed CPU time for 100 steps (s) =   9.08650684    
+ Frames per second (FPS)            =   11.0053291    
+ Elapsed time (s):    3.72499990    
+ FPS:    26.8456383    
+ Pixels sample:     7631988    10724259
+ Final T=   3.64334174E-02  CN=   1.00043786      DT=   3.71724338E-04  VISC=   3.15221003E-03
+ Final Max |UR|=   38.0369644    
+ Final Max |OM2|=  0.425426394    
+ Final Max |PIXARR|=    16777215
+Running N=2048 ...
+ --- INITIALIZING DNS3D ---
+ N=        2048  (MAXN=        4096 )
+ After PAO: VISC=   3.15221003E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   1023.00000      Max(GAMMA)=   1023.00000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   3.92752028    
+ Max |UR| after STEP2A  =   2.77720881    
+ Initial DT=   1.64432568E-04  CN=   1.00000000    
+ Step          10  T=   1.64500694E-03  DT=   1.64626006E-04  CN=   1.00016224    
+ Step          20  T=   3.29255243E-03  DT=   1.64919984E-04  CN=   1.00018811    
+ Step          30  T=   4.94314730E-03  DT=   1.65232428E-04  CN=   1.00019193    
+ Step          40  T=   6.59692101E-03  DT=   1.65556383E-04  CN=   1.00019586    
+ Step          50  T=   8.25396646E-03  DT=   1.65889607E-04  CN=   1.00020325    
+ Step          60  T=   9.91438702E-03  DT=   1.66232596E-04  CN=   1.00021338    
+ Step          70  T=   1.15782879E-02  DT=   1.66585494E-04  CN=   1.00021887    
+ Step          80  T=   1.32457754E-02  DT=   1.66949481E-04  CN=   1.00022280    
+ Step          90  T=   1.49169452E-02  DT=   1.67324091E-04  CN=   1.00022769    
+ Step         100  T=   1.65918954E-02  DT=   1.67708204E-04  CN=   1.00023556    
+ Elapsed CPU time for 100 steps (s) =   54.0582161    
+ Frames per second (FPS)            =   1.84985757    
+ Elapsed time (s):    21.7530003    
+ FPS:    4.59706688    
+ Pixels sample:     7500402    11776947
+ Final T=   1.65918954E-02  CN=   1.00023556      DT=   1.67708204E-04  VISC=   3.15221003E-03
+ Final Max |UR|=   35.5071220    
+ Final Max |OM2|=  0.378148049    
+ Final Max |PIXARR|=    16777215
+Running N=4096 ...
+ --- INITIALIZING DNS3D ---
+ N=        4096  (MAXN=        4096 )
+ After PAO: VISC=   3.15221003E-03
+   Max |UC|=   5.61375692E-02
+ After INIT  Max(ALFA)=   2047.00000      Max(GAMMA)=   2047.00000    
+ After CALCOM  Max |OM2|=  0.342198282    
+ Max |UC| before STEP2A =   4.42702007    
+ Max |UR| after STEP2A  =   3.13039541    
+ Initial DT=   8.65697511E-05  CN=   1.00000000    
+ Step          10  T=   8.65739479E-04  DT=   8.65815746E-05  CN=   1.00001955    
+ Step          20  T=   1.73163950E-03  DT=   8.66004993E-05  CN=   1.00002229    
+ Step          30  T=   2.59773503E-03  DT=   8.66207629E-05  CN=   1.00002396    
+ Step          40  T=   3.46403569E-03  DT=   8.66413029E-05  CN=   1.00002396    
+ Step          50  T=   4.33054613E-03  DT=   8.66628616E-05  CN=   1.00002468    
+ Step          60  T=   5.19727543E-03  DT=   8.66854680E-05  CN=   1.00002599    
+ Step          70  T=   6.06423244E-03  DT=   8.67083800E-05  CN=   1.00002658    
+ Step          80  T=   6.93142368E-03  DT=   8.67320341E-05  CN=   1.00002694    
+ Step          90  T=   7.79885380E-03  DT=   8.67566123E-05  CN=   1.00002825    
+ Step         100  T=   8.66653305E-03  DT=   8.67820345E-05  CN=   1.00003004    
+ Elapsed CPU time for 100 steps (s) =   410.885742    
+ Frames per second (FPS)            =  0.243376657    
+ Elapsed time (s):    168.427994    
+ FPS:   0.593725502    
+ Pixels sample:     6645093     7039851
+ Final T=   8.66653305E-03  CN=   1.00003004      DT=   8.67820345E-05  VISC=   3.15221003E-03
+ Final Max |UR|=   39.3201065    
+ Final Max |OM2|=  0.356297106    
+ Final Max |PIXARR|=    16777215
+Done. Results written to fps_sweep.csv

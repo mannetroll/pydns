@@ -50,3 +50,4 @@ dmg_root/
 fortran/dns_fortran.cpython-311-darwin.so.dSYM/
 /fortran/libvfft.a
 /.python-version
+/snapshot.csv

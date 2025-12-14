@@ -1,27 +1,42 @@
       PROGRAM RUN_DNS
 C***********************************************************************
-C  Simple diagnostic harness for the legacy DNS routines (visasub.f)
+C  Simple diagnostic harness for the legacy DNS routines (visasub3d.f)
 C  Updated: 100 iterations, log every 10th step, report FPS at the end.
+C
+C  Change: N is read from command line:  ./dns3d.exe <N>
+C          If not provided, defaults to 512.
+C
+C  NOTE: To keep Fortran-77 style + EQUIVALENCE(UC,UR), arrays are sized
+C        with MAXN at compile-time. Runtime N must be <= MAXN.
 C***********************************************************************
 
       IMPLICIT NONE
-      INTEGER N, N3D2, PX, PY
-      PARAMETER (N = 256)
-      PARAMETER (N3D2 = 3*N/2)
-      PARAMETER (PX = N3D2*2)
-      PARAMETER (PY = N3D2*2)
 
-C     Arrays
-      COMPLEX   UC(1+3*N/4,3*N/2,3)
-      COMPLEX   OM2(N/2,N)
-      COMPLEX   FNM1(N/2,N)
-      REAL      ALFA(N/2), GAMMA(N)
-      REAL      TFFTXZ(2+3*N/2,3*N/2,4)
-      REAL      PREX(15+3*N/2,4)
-      REAL      PREZ(15+3*N,4)
-      REAL      WSAVE(15+N)
-      REAL      UR(2+3*N/2,3*N/2,3)
-      INTEGER   PIXARR(PX,PY), STEPS
+C----- Max compile-time size (adjust if you want) -----------------------
+      INTEGER MAXN, MAXN3D2, MAXPX, MAXPY
+      PARAMETER (MAXN   = 4096)
+      PARAMETER (MAXN3D2 = 3*MAXN/2)
+      PARAMETER (MAXPX  = MAXN3D2*2)
+      PARAMETER (MAXPY  = MAXN3D2*2)
+
+C----- Runtime sizes ----------------------------------------------------
+      INTEGER N, N3D2, PX, PY
+
+C----- Command line -----------------------------------------------------
+      INTEGER NARG
+      CHARACTER*32 ARG
+
+C     Arrays (sized by MAXN, but routines use runtime N)
+      COMPLEX   UC(1+3*MAXN/4,3*MAXN/2,3)
+      COMPLEX   OM2(MAXN/2,MAXN)
+      COMPLEX   FNM1(MAXN/2,MAXN)
+      REAL      ALFA(MAXN/2), GAMMA(MAXN)
+      REAL      TFFTXZ(2+3*MAXN/2,3*MAXN/2,4)
+      REAL      PREX(15+3*MAXN/2,4)
+      REAL      PREZ(15+3*MAXN,4)
+      REAL      WSAVE(15+MAXN)
+      REAL      UR(2+3*MAXN/2,3*MAXN/2,3)
+      INTEGER   PIXARR(MAXPX,MAXPY), STEPS
 
       EQUIVALENCE (UC,UR)
 
@@ -31,8 +46,21 @@ C     Scalars
 
 C     Timing for FPS (using standard CPU_TIME)
       REAL      TBEGIN, TEND, ELAP, FPS, ELAP2
-      INTEGER COUNT_RATE, START, FINISH
       INTEGER START2, FINISH2, COUNT_RATE2, COUNT_MAX, TICKS
+
+C----- Read N from command line ----------------------------------------
+      NARG = IARGC()
+      IF (NARG .GE. 1) THEN
+         CALL GETARG(1, ARG)
+         READ(ARG,*) N
+      ELSE
+         N = 512
+      END IF
+
+      N3D2 = 3*N/2
+      PX   = 2*N3D2
+      PY   = 2*N3D2
+
       CALL SYSTEM_CLOCK(START2, COUNT_RATE2, COUNT_MAX)
 
       NE = N
@@ -48,7 +76,7 @@ C     Timing for FPS (using standard CPU_TIME)
       IFN = 1
 
       WRITE(*,*) '--- INITIALIZING DNS3D ---'
-      WRITE(*,*) 'N=',N
+      WRITE(*,*) 'N=',N,' (MAXN=',MAXN,')'
 
 C===== Initialization sequence =========================================
 
@@ -80,8 +108,8 @@ C     Start timing before the main loop
       CALL CPU_TIME(TBEGIN)
       CALL SYSTEM_CLOCK(START2)
 
-C     1000 time steps, log every 10th step
-      STEPS = 1000
+C     100 time steps, log every 10th step
+      STEPS = 100
       DO 100 IT=1,STEPS
          CALL STEP2B(N,N,UC,UR,TFFTXZ,PREX,PREZ)
          CALL STEP3(N,N,UC,UR,TFFTXZ,PREX,PREZ,
@@ -89,7 +117,7 @@ C     1000 time steps, log every 10th step
          CALL STEP2A(N,N,UC,UR,TFFTXZ,PREX,PREZ)
          CALL NEXTDT(N,N,UR,CFLNUM,IT,IFN,DT,CN)
 
-         IF (MOD(IT,100) .EQ. 0) THEN
+         IF (MOD(IT,10) .EQ. 0) THEN
             WRITE(*,*) 'Step',IT,' T=',T,' DT=',DT,' CN=',CN
          END IF
   100 CONTINUE
@@ -126,6 +154,5 @@ C===== Visualization / sanity checks ===================================
       WRITE(*,*) 'Final Max |UR|=',MAXVAL(ABS(UR))
       WRITE(*,*) 'Final Max |OM2|=',MAXVAL(ABS(OM2))
       WRITE(*,*) 'Final Max |PIXARR|=',MAXVAL(ABS(PIXARR))
-
 
       END
