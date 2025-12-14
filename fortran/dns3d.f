@@ -14,7 +14,7 @@ C***********************************************************************
 
 C----- Max compile-time size (adjust if you want) -----------------------
       INTEGER MAXN, MAXN3D2, MAXPX, MAXPY
-      PARAMETER (MAXN   = 8192)
+      PARAMETER (MAXN   = 4096)
       PARAMETER (MAXN3D2 = 3*MAXN/2)
       PARAMETER (MAXPX  = MAXN3D2*2)
       PARAMETER (MAXPY  = MAXN3D2*2)
