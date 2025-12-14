@@ -14,7 +14,7 @@ C***********************************************************************
 
 C----- Max compile-time size (adjust if you want) -----------------------
       INTEGER MAXN, MAXN3D2, MAXPX, MAXPY
-      PARAMETER (MAXN   = 4096)
+      PARAMETER (MAXN   = 8192)
       PARAMETER (MAXN3D2 = 3*MAXN/2)
       PARAMETER (MAXPX  = MAXN3D2*2)
       PARAMETER (MAXPY  = MAXN3D2*2)
@@ -36,13 +36,12 @@ C     Arrays (sized by MAXN, but routines use runtime N)
       REAL      PREZ(15+3*MAXN,4)
       REAL      WSAVE(15+MAXN)
       REAL      UR(2+3*MAXN/2,3*MAXN/2,3)
-      INTEGER   PIXARR(MAXPX,MAXPY), STEPS
 
       EQUIVALENCE (UC,UR)
 
 C     Scalars
       REAL      RE, K0, VISC, T, DT, CN, CNM1, CFLNUM
-      INTEGER   IT, IFN, NE
+      INTEGER   IT, IFN, NE, STEPS
 
 C     Timing for FPS (using standard CPU_TIME)
       REAL      TBEGIN, TEND, ELAP, FPS, ELAP2
@@ -140,19 +139,5 @@ C     Stop timing after the loop and compute FPS
       ELAP2= FLOAT(TICKS) / FLOAT(COUNT_RATE2)
       PRINT *, 'Elapsed time (s): ', ELAP2
       PRINT *, 'FPS: ', REAL(STEPS) / ELAP2
-
-C===== Visualization / sanity checks ===================================
-
-      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,1)
-      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,2)
-      CALL FIELD2PIX(PIXARR,PX,PY,UR,75.0,N3D2,N3D2,3)
-      CALL FIELD2KIN(PIXARR,PX,PY,UR,125.0,N3D2,N3D2)
-      CALL OM2PHYS(N,N,UC,UR,OM2,TFFTXZ,PREX,PREZ)
-
-      WRITE(*,*) 'Pixels sample:',PIXARR(1,1),PIXARR(64,64)
-      WRITE(*,*) 'Final T=',T,' CN=',CN,' DT=',DT,' VISC=',VISC
-      WRITE(*,*) 'Final Max |UR|=',MAXVAL(ABS(UR))
-      WRITE(*,*) 'Final Max |OM2|=',MAXVAL(ABS(OM2))
-      WRITE(*,*) 'Final Max |PIXARR|=',MAXVAL(ABS(PIXARR))
 
       END
