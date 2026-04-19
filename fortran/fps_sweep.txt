@@ -1,4 +1,27 @@
 Running N=32 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=          32  (MAXN=        4096 )
  After PAO: VISC=   3.34679685E-03
@@ -18,16 +41,34 @@ Running N=32 ...
  Step          80  T=   1.03661370      DT=   1.45281544E-02  CN=  0.993033230    
  Step          90  T=   1.18272913      DT=   1.48060145E-02  CN=  0.996113181    
  Step         100  T=   1.32966650      DT=   1.50295468E-02  CN=   1.00779974    
- Elapsed CPU time for 100 steps (s) =  0.103609994    
- Frames per second (FPS)            =   965.157837    
- Elapsed time (s):    4.60000001E-02
- FPS:    2173.91309    
- Pixels sample:    10724259           0
- Final T=   1.32966650      CN=   1.00779974      DT=   1.50295468E-02  VISC=   3.34679685E-03
- Final Max |UR|=   24.0026989    
- Final Max |OM2|=  0.565046310    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   1.32329985E-02
+ Frames per second (CPU)            =   7556.86621    
+ Elapsed time (s):    1.09999999E-02
+ FPS:    9090.90918    
 Running N=64 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=          64  (MAXN=        4096 )
  After PAO: VISC=   3.15245520E-03
@@ -47,16 +88,34 @@ Running N=64 ...
  Step          80  T=  0.514931202      DT=   6.86351443E-03  CN=  0.999579430    
  Step          90  T=  0.583600104      DT=   6.90981746E-03  CN=   1.00231087    
  Step         100  T=  0.653526664      DT=   7.08944583E-03  CN=   1.00295019    
- Elapsed CPU time for 100 steps (s) =  0.105535999    
- Frames per second (FPS)            =   947.543945    
- Elapsed time (s):    5.09999990E-02
- FPS:    1960.78430    
- Pixels sample:    10197915           0
- Final T=  0.653526664      CN=   1.00295019      DT=   7.08944583E-03  VISC=   3.15245520E-03
- Final Max |UR|=   26.7370033    
- Final Max |OM2|=  0.717303455    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   2.10280046E-02
+ Frames per second (CPU)            =   4755.56299    
+ Elapsed time (s):    1.70000009E-02
+ FPS:    5882.35254    
 Running N=128 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=         128  (MAXN=        4096 )
  After PAO: VISC=   3.15221003E-03
@@ -76,16 +135,34 @@ Running N=128 ...
  Step          80  T=  0.263087422      DT=   3.54207493E-03  CN=   1.00077379    
  Step          90  T=  0.298415482      DT=   3.51015013E-03  CN=  0.998758554    
  Step         100  T=  0.333393127      DT=   3.48601933E-03  CN=  0.999425948    
- Elapsed CPU time for 100 steps (s) =  0.145190001    
- Frames per second (FPS)            =   688.752686    
- Elapsed time (s):    6.80000037E-02
- FPS:    1470.58813    
- Pixels sample:     3684408           0
- Final T=  0.333393127      CN=  0.999425948      DT=   3.48601933E-03  VISC=   3.15221003E-03
- Final Max |UR|=   30.5985622    
- Final Max |OM2|=  0.661090672    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   6.89220056E-02
+ Frames per second (CPU)            =   1450.91541    
+ Elapsed time (s):    4.19999994E-02
+ FPS:    2380.95239    
 Running N=256 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=         256  (MAXN=        4096 )
  After PAO: VISC=   3.15221003E-03
@@ -105,16 +182,34 @@ Running N=256 ...
  Step          80  T=  0.129165471      DT=   1.60387519E-03  CN=   1.00036216    
  Step          90  T=  0.145238057      DT=   1.61164941E-03  CN=   1.00054109    
  Step         100  T=  0.161396936      DT=   1.62127998E-03  CN=   1.00069606    
- Elapsed CPU time for 100 steps (s) =  0.409762979    
- Frames per second (FPS)            =   244.043518    
- Elapsed time (s):   0.177000001    
- FPS:    564.971741    
- Pixels sample:     4868682           0
- Final T=  0.161396936      CN=   1.00069606      DT=   1.62127998E-03  VISC=   3.15221003E-03
- Final Max |UR|=   38.0857620    
- Final Max |OM2|=  0.583955824    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =  0.315068990    
+ Frames per second (CPU)            =   317.390808    
+ Elapsed time (s):   0.143999994    
+ FPS:    694.444458    
 Running N=512 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=         512  (MAXN=        4096 )
  After PAO: VISC=   3.15220980E-03
@@ -134,16 +229,34 @@ Running N=512 ...
  Step          80  T=   5.46131507E-02  DT=   7.03702855E-04  CN=   1.00066161    
  Step          90  T=   6.16701543E-02  DT=   7.08084321E-04  CN=   1.00060368    
  Step         100  T=   6.87701479E-02  DT=   7.12341454E-04  CN=   1.00059962    
- Elapsed CPU time for 100 steps (s) =   1.74484193    
- Frames per second (FPS)            =   57.3117828    
- Elapsed time (s):   0.721000016    
- FPS:    138.696259    
- Pixels sample:     6447714     2171169
- Final T=   6.87701479E-02  CN=   1.00059962      DT=   7.12341454E-04  VISC=   3.15220980E-03
- Final Max |UR|=   42.9587326    
- Final Max |OM2|=  0.482265800    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   1.66093194    
+ Frames per second (CPU)            =   60.2071609    
+ Elapsed time (s):   0.694000006    
+ FPS:    144.092224    
 Running N=1024 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=        1024  (MAXN=        4096 )
  After PAO: VISC=   3.15221003E-03
@@ -163,16 +276,34 @@ Running N=1024 ...
  Step          80  T=   2.90324800E-02  DT=   3.68553738E-04  CN=   1.00041008    
  Step          90  T=   3.27249691E-02  DT=   3.70127615E-04  CN=   1.00044727    
  Step         100  T=   3.64334174E-02  DT=   3.71724338E-04  CN=   1.00043786    
- Elapsed CPU time for 100 steps (s) =   9.08650684    
- Frames per second (FPS)            =   11.0053291    
- Elapsed time (s):    3.72499990    
- FPS:    26.8456383    
- Pixels sample:     7631988    10724259
- Final T=   3.64334174E-02  CN=   1.00043786      DT=   3.71724338E-04  VISC=   3.15221003E-03
- Final Max |UR|=   38.0369644    
- Final Max |OM2|=  0.425426394    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   9.05584908    
+ Frames per second (CPU)            =   11.0425873    
+ Elapsed time (s):    3.81699991    
+ FPS:    26.1985855    
 Running N=2048 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=        2048  (MAXN=        4096 )
  After PAO: VISC=   3.15221003E-03
@@ -192,16 +323,34 @@ Running N=2048 ...
  Step          80  T=   1.32457754E-02  DT=   1.66949481E-04  CN=   1.00022280    
  Step          90  T=   1.49169452E-02  DT=   1.67324091E-04  CN=   1.00022769    
  Step         100  T=   1.65918954E-02  DT=   1.67708204E-04  CN=   1.00023556    
- Elapsed CPU time for 100 steps (s) =   54.0582161    
- Frames per second (FPS)            =   1.84985757    
- Elapsed time (s):    21.7530003    
- FPS:    4.59706688    
- Pixels sample:     7500402    11776947
- Final T=   1.65918954E-02  CN=   1.00023556      DT=   1.67708204E-04  VISC=   3.15221003E-03
- Final Max |UR|=   35.5071220    
- Final Max |OM2|=  0.378148049    
- Final Max |PIXARR|=    16777215
+ Elapsed CPU time for 100 steps (s) =   53.4265938    
+ Frames per second (CPU)            =   1.87172699    
+ Elapsed time (s):    21.8020000    
+ FPS:    4.58673525    
 Running N=4096 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
  --- INITIALIZING DNS3D ---
  N=        4096  (MAXN=        4096 )
  After PAO: VISC=   3.15221003E-03
@@ -221,13 +370,45 @@ Running N=4096 ...
  Step          80  T=   6.93142368E-03  DT=   8.67320341E-05  CN=   1.00002694    
  Step          90  T=   7.79885380E-03  DT=   8.67566123E-05  CN=   1.00002825    
  Step         100  T=   8.66653305E-03  DT=   8.67820345E-05  CN=   1.00003004    
- Elapsed CPU time for 100 steps (s) =   410.885742    
- Frames per second (FPS)            =  0.243376657    
- Elapsed time (s):    168.427994    
- FPS:   0.593725502    
- Pixels sample:     6645093     7039851
- Final T=   8.66653305E-03  CN=   1.00003004      DT=   8.67820345E-05  VISC=   3.15221003E-03
- Final Max |UR|=   39.3201065    
- Final Max |OM2|=  0.356297106    
- Final Max |PIXARR|=    16777215
-Done. Results written to fps_sweep.csv
+ Elapsed CPU time for 100 steps (s) =   404.748505    
+ Frames per second (CPU)            =  0.247067004    
+ Elapsed time (s):    167.072006    
+ FPS:   0.598544300    
+Running N=8192 ...
+
+OPENMP DISPLAY ENVIRONMENT BEGIN
+  _OPENMP = '201511'
+  [host] OMP_DYNAMIC = 'FALSE'
+  [host] OMP_NESTED = 'FALSE'
+  [host] OMP_NUM_THREADS = '4'
+  [host] OMP_SCHEDULE = 'DYNAMIC'
+  [host] OMP_PROC_BIND = 'FALSE'
+  [host] OMP_PLACES = ''
+  [host] OMP_STACKSIZE = '0'
+  [host] OMP_WAIT_POLICY = 'PASSIVE'
+  [host] OMP_THREAD_LIMIT = '4294967295'
+  [host] OMP_MAX_ACTIVE_LEVELS = '1'
+  [host] OMP_NUM_TEAMS = '0'
+  [host] OMP_TEAMS_THREAD_LIMIT = '0'
+  [all] OMP_CANCELLATION = 'FALSE'
+  [all] OMP_DEFAULT_DEVICE = '0'
+  [all] OMP_MAX_TASK_PRIORITY = '0'
+  [all] OMP_DISPLAY_AFFINITY = 'FALSE'
+  [host] OMP_AFFINITY_FORMAT = 'level %L thread %i affinity %A'
+  [host] OMP_ALLOCATOR = 'omp_default_mem_alloc'
+  [all] OMP_TARGET_OFFLOAD = 'DEFAULT'
+OPENMP DISPLAY ENVIRONMENT END
+ --- INITIALIZING DNS3D ---
+ N=        8192  (MAXN=        4096 )
+
+Program received signal SIGBUS: Access to an undefined portion of a memory object.
+
+Backtrace for this error:
+#0  0x149b66103
+#1  0x149b65083
+#2  0x18056d6a3
+#3  0x102791b17
+#4  0x102791b17
+#5  0x1027b82ff
+fps_sweep.sh: line 18: 41162 Bus error: 10              stdbuf -oL "${BIN}" "${N}" 2>&1
+     41163 Done                       | tee "${LOG}"

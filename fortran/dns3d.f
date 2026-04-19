@@ -131,7 +131,7 @@ C     Stop timing after the loop and compute FPS
       END IF
 
       WRITE(*,*) 'Elapsed CPU time for 100 steps (s) =', ELAP
-      WRITE(*,*) 'Frames per second (FPS)            =', FPS
+      WRITE(*,*) 'Frames per second (CPU)            =', FPS
 
       CALL SYSTEM_CLOCK(FINISH2)
       TICKS = FINISH2 - START2

@@ -133,7 +133,7 @@ program run_dns
   end if
 
   write(*,*) 'Elapsed CPU time for 100 steps (s) =', elap
-  write(*,*) 'Frames per second (FPS)            =', fps
+  write(*,*) 'Frames per second (CPU)            =', fps
 
   call system_clock(finish2)
   ticks = finish2 - start2
